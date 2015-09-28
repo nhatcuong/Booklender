@@ -34,6 +34,7 @@ if not os.path.isfile(dbname):
     logger.info("create db file")
     db.create_all() #all tables have been declared in models
 
+import services
 
 @app.route('/')
 def hello_world():
