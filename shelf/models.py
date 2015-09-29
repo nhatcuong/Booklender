@@ -16,11 +16,13 @@ class Book(db.Model):
     title = db.Column(db.String(256))
     author = db.Column(db.String(256))
     status = db.Column(db.String(10), nullable=True)
+    currentLendingId = db.Column(db.Integer)
+
+    lendings = db.relationship('Lending', lazy='dynamic')
 
     def create(self):
         self.status = BookStatus.ON_SHELF
         db.session.add(self)
-        db.session.commit()
         return self
 
     def dict(self):
@@ -30,6 +32,8 @@ class Book(db.Model):
         self.getBackIfLended()
         newLending = Lending().create(self, reader)
         self.status = BookStatus.LENDED
+        self.currentLendingId = newLending.id
+        db.session.add_all([self, reader])
 
     def getBackIfLended(self):
         lending = Lending.getCurrentLendingOfBook(self)
@@ -43,9 +47,9 @@ class Reader(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(20), unique=True)
 
-    def create(self, name):
-        self.name = name
+    def create(self):
         db.session.add(self)
+        return self
 
     def dict(self):
         return {"name": self.name}
@@ -56,14 +60,15 @@ class Lending(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     startDate = db.Column(db.Date)
     endDate = db.Column(db.Date)
-    # borrower = db.relationship("Reader")
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
-    # book = db.relationship("Book", backref="lendings")
+    bookId = db.Column(db.Integer, db.ForeignKey('book.id'))
+    borrowerId = db.Column(db.Integer, db.ForeignKey('reader.id'))
 
-    def create(self, book):
-        self.book = book
+    def create(self, book, reader):
+        self.bookId = book.id
+        self.borrowerId = reader.id
         self.startDate = date.today()
         db.session.add(self)
+        return self
 
     def dict(self):
         return {"book": self.book.title, "borrower": self.borrower.name, "startDate": self.startDate}

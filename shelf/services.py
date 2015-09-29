@@ -2,27 +2,61 @@ from flask import request
 
 from shelf import app, db
 from service_helper import getData, getError, getSuccess
-from shelf.models import Book
+from shelf.models import Book, Reader
 
 
 # create a book #B
 @app.route("/book/create", methods=['GET', 'POST'])
 def createBook():
     data = getData(request)
+    if data is None:
+        return getError("book title is required"), 401  # client error
     title = data.get("title")
     author = data.get("author")
     if (title is None or len(title) == 0):
         return getError("book title is required"), 401  # client error
-    # to do check pair(title, author) is unique
-    book = Book(title = title, author = author)
-    book.create()
-    # book.create(title, author)
-    # db.session.commit()
+    # todo check pair(title, author) is unique
+    Book(title=title, author=author).create()
+    db.session.commit()
     return getSuccess("created"), 201
 
+
 # create a reader #R
+@app.route("/reader/create", methods=['GET', 'POST'])
+def createReader():
+    data = getData(request)
+    if data is None:
+        return getError("book title is required"), 401  # client error
+    name = data.get('name');
+    if (name is None or len(name) == 0):
+        return getError("name is required"), 401
+    Reader(name=name).create()
+    db.session.commit()
+    return getSuccess("created"), 201
+
 
 # lend a book to a reader #B
+@app.route("/action/lend", methods=['GET', 'POST'])
+def actionLend():
+    data = getData(request)
+    if data is None:
+        return getError("book title is required"), 401  # client error
+    try:
+        bookId = int(data.get('bookId'))
+        readerId = int(data.get('readerId'))
+    except (ValueError, TypeError):
+        return getError("invalid input, must have bookId and readerId in int " + data)
+
+    book = Book.query.get(bookId)
+    reader = Reader.query.get(readerId)
+    if book is None:
+        return getError("book does not exist for id " + bookId), 404  # not found
+    if reader is None:
+        return getError("reader does not exist for id " + readerId), 404
+
+    book.lendToReader(reader)
+    db.session.commit()
+    return getSuccess("lended to reader " + reader.name), 200
 
 # get back a book #B
 
