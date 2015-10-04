@@ -18,6 +18,8 @@ class Book(db.Model):
     status = db.Column(db.String(10), nullable=True)
     currentLendingId = db.Column(db.Integer)
 
+    # currentBorrower = None;
+
     lendings = db.relationship('Lending', lazy='dynamic')
 
     def create(self):
@@ -31,6 +33,7 @@ class Book(db.Model):
     def lendToReader(self, reader):
         self.getBackIfLended()
         newLending = Lending().create(self, reader)
+        db.session.commit()  # so that newLending will have an id
         self.status = BookStatus.LENDED
         self.currentLendingId = newLending.id
         db.session.add_all([self, reader])
@@ -40,6 +43,11 @@ class Book(db.Model):
         if lending is not None:
             lending.end()
         self.status = BookStatus.ON_SHELF
+
+    # def obtainBorrower(self):
+    #     if (self.currentLendingId is not None):
+    #         lending = Lending.query.get(self.currentLendingId)
+    #         self.currentBorrower = Reader.query.get(lending.borrowerId)
 
 
 class Reader(db.Model):

@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 
 from shelf import app, db
 from service_helper import getData, getError, getSuccess
@@ -21,6 +21,13 @@ def createBook():
     return getSuccess("created"), 201
 
 
+# obtain all books #B
+@app.route("/book/all", methods=['GET', 'POST'])
+def getAllBooks():
+    allBooks = Book.query.all();
+    return jsonify({"books": [book.dict() for book in allBooks]}), 200
+
+
 # create a reader #R
 @app.route("/reader/create", methods=['GET', 'POST'])
 def createReader():
@@ -40,7 +47,7 @@ def createReader():
 def actionLend():
     data = getData(request)
     if data is None:
-        return getError("book title is required"), 401  # client error
+        return getError("book id and reader id are required"), 401  # client error
     try:
         bookId = int(data.get('bookId'))
         readerId = int(data.get('readerId'))
