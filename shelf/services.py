@@ -1,7 +1,7 @@
 from flask import request, jsonify
 
 from shelf import app, db
-from service_helper import getData, getError, getSuccess
+from services_helper import getData, getError, getSuccess
 from shelf.models import Book, Reader
 
 
@@ -60,6 +60,10 @@ def actionLend():
         return getError("book does not exist for id " + bookId), 404  # not found
     if reader is None:
         return getError("reader does not exist for id " + readerId), 404
+
+    currentLending = book.obtainCurrentLending()
+    if currentLending.borrowerId == reader.id:
+        return getError("book already lended to the same user"), 401
 
     book.lendToReader(reader)
     db.session.commit()

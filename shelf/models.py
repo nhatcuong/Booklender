@@ -39,10 +39,15 @@ class Book(db.Model):
         db.session.add_all([self, reader])
 
     def getBackIfLended(self):
-        lending = Lending.getCurrentLendingOfBook(self)
+        lending = self.obtainCurrentLending()
         if lending is not None:
             lending.end()
         self.status = BookStatus.ON_SHELF
+
+    def obtainCurrentLending(self):
+        if (self.currentLendingId is not None):
+            return Lending.query.get(self.currentLendingId)
+        return None
 
     # def obtainBorrower(self):
     #     if (self.currentLendingId is not None):
@@ -83,12 +88,3 @@ class Lending(db.Model):
 
     def endLending(self):
         self.endDate = date.today()
-
-    @staticmethod
-    def getCurrentLendingOfBook(book):
-        lendings = book.lendings
-        runningLendings = {l for l in lendings if l.endDate is None}
-        assert len(runningLendings) <= 1, "book %r has more than 1 running lendings" % book.id
-        if len(runningLendings) > 0:
-            return runningLendings[0]
-        return None
