@@ -1,10 +1,8 @@
 import unittest
+import random
+import string
 
 import requests
-
-import random
-
-import string
 
 prefix = 'http://127.0.0.1:5000/'
 
@@ -33,6 +31,18 @@ class BookTest(unittest.TestCase):
         r = requests.post(prefix + "book/all")
         assert r.json()["books"] is not None
         assert len(r.json()["books"]) == bookNumber0 + 1;
+
+
+class ReaderTest(unittest.TestCase):
+    def testCreateReader(self):
+        r = requests.post(prefix + "reader/create", data={
+            "name": ""
+        })
+        assert r.status_code == 401
+        r = requests.post(prefix + "reader/create", data={
+            "name": randomStringOfLen(10)
+        })
+        assert r.status_code == 201
 
 
 def randomStringOfLen(l):

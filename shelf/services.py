@@ -2,7 +2,7 @@ from flask import request, jsonify
 
 from shelf import app, db
 from services_helper import getData, getError, getSuccess
-from shelf.models import Book, Reader
+from shelf.models import Book, Reader, Lending
 
 
 # create a book #B
@@ -26,6 +26,13 @@ def createBook():
 def getAllBooks():
     allBooks = Book.query.all();
     return jsonify({"books": [book.dict() for book in allBooks]}), 200
+
+
+# R
+@app.route("/reader/all", methods=['GET', 'POST'])
+def getAllReaders():
+    allReaders = Reader.query.all();
+    return jsonify({"reader": [reader.dict() for reader in allReaders]}), 200
 
 
 # create a reader #R
@@ -68,6 +75,21 @@ def actionLend():
     book.lendToReader(reader)
     db.session.commit()
     return getSuccess("lended to reader " + reader.name), 200
+
+
+@app.route("/book/currentBorrower", methods=['GET', 'POST'])
+def getCurrentBookBorrower():
+    data = getData(request)
+    try:
+        bookId = int(data.get("bookId"))
+    except (ValueError, TypeError):
+        return getError("invalid input, bookId must be an int"), 401
+    book = Book.query.get(bookId)
+    if book is None:
+        return getError("no book found for id " + bookId)
+    lending = Lending.query.get(book.currentLendingId)
+    return Reader.query.get(lending.borrowerId).dict(), 200
+
 
 # get back a book #B
 

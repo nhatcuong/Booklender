@@ -28,7 +28,7 @@ class Book(db.Model):
         return self
 
     def dict(self):
-        return {"title": self.title, "author": self.author, "status": self.status}
+        return {"id": id, "title": self.title, "author": self.author, "status": self.status}
 
     def lendToReader(self, reader):
         self.getBackIfLended()
@@ -65,7 +65,7 @@ class Reader(db.Model):
         return self
 
     def dict(self):
-        return {"name": self.name}
+        return {"name": self.name, "id": self.id}
 
 
 class Lending(db.Model):
@@ -84,7 +84,7 @@ class Lending(db.Model):
         return self
 
     def dict(self):
-        return {"book": self.book.title, "borrower": self.borrower.name, "startDate": self.startDate}
+        return {"id": self.id, "book": self.book.title, "borrower": self.borrower.name, "startDate": self.startDate}
 
     def endLending(self):
         self.endDate = date.today()
