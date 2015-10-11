@@ -28,7 +28,7 @@ class Book(db.Model):
         return self
 
     def dict(self):
-        return {"id": id, "title": self.title, "author": self.author, "status": self.status}
+        return {"id": self.id, "title": self.title, "author": self.author, "status": self.status}
 
     def lendToReader(self, reader):
         self.getBackIfLended()

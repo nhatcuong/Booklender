@@ -16,9 +16,9 @@ def createBook():
     if (title is None or len(title) == 0):
         return getError("book title is required"), 401  # client error
     # todo check pair(title, author) is unique
-    Book(title=title, author=author).create()
+    book = Book(title=title, author=author).create()
     db.session.commit()
-    return getSuccess("created"), 201
+    return jsonify({"newBook": book.dict()}), 201
 
 
 # obtain all books #B

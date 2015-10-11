@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="Demo">
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <title></title>
+</head>
+<body ng-controller="DemoController">
+
+    Book list
+    <select>
+        <option ng-repeat="book in books | orderBy:'title'">
+            {{book.title}}
+        </option>
+    </select><br>
+
+    Add new book :
+    <form novalidate>
+        Title: <input type="text" ng-model="title"><br>
+        Author: <input type="text" ng-model="author"><br>
+        <button ng-click="createABook(title, author)">Save</button>
+    </form>
+
+    <div></div>
+
+    <script src="/static/booklender.js"></script>
+</body>
+</html>

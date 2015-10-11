@@ -2,6 +2,7 @@ import os
 import logging
 
 from flask import Flask
+import flask
 from flask_sqlalchemy import SQLAlchemy
 
 basedir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
@@ -37,9 +38,9 @@ if not os.path.isfile(dbname):
 import services
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
-
+def redirect_to_homepage():
+    # return flask.render_template(flask.url_for('static', filename="index.html"))
+    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run()
