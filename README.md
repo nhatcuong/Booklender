@@ -1,10 +1,10 @@
 This project is about creating a web based application to manage the books you lended to people.
 It will support basic functionnalities like :
-- Add new book
-- Add new borrower
-- Lend a book to a borrower
-- Check to whom you have lended a book
-- Take back book you lended
+* Add new book
+* Add new borrower
+* Lend a book to a borrower
+* Check to whom you have lended a book
+* Take back book you lended
 And more...
 
 I write it in Python and AngularJS, since I learned it recently and feel like do it for a training.
@@ -38,6 +38,3 @@ python startlending.py
 ```
 
 Go to http://127.0.0.1:5000/
-
-
-
