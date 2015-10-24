@@ -32,7 +32,7 @@ def getAllBooks():
 @app.route("/reader/all", methods=['GET', 'POST'])
 def getAllReaders():
     allReaders = Reader.query.all();
-    return jsonify({"reader": [reader.dict() for reader in allReaders]}), 200
+    return jsonify({"readers": [reader.dict() for reader in allReaders]}), 200
 
 
 # create a reader #R
@@ -40,13 +40,13 @@ def getAllReaders():
 def createReader():
     data = getData(request)
     if data is None:
-        return getError("book title is required"), 401  # client error
+        return getError("name is required"), 401  # client error
     name = data.get('name');
     if (name is None or len(name) == 0):
         return getError("name is required"), 401
-    Reader(name=name).create()
+    reader = Reader(name=name).create()
     db.session.commit()
-    return getSuccess("created"), 201
+    return jsonify({"newReader": reader.dict()}), 201
 
 
 # lend a book to a reader #B
@@ -69,15 +69,15 @@ def actionLend():
         return getError("reader does not exist for id " + readerId), 404
 
     currentLending = book.obtainCurrentLending()
-    if currentLending.borrowerId == reader.id:
-        return getError("book already lended to the same user"), 401
+    if (currentLending is not None):
+        return getError("book already lended to someone"), 401
 
     book.lendToReader(reader)
     db.session.commit()
     return getSuccess("lended to reader " + reader.name), 200
 
 
-@app.route("/book/currentBorrower", methods=['GET', 'POST'])
+@app.route("/reader/currentBorrowerOfBook", methods=['GET', 'POST'])
 def getCurrentBookBorrower():
     data = getData(request)
     try:
@@ -87,8 +87,10 @@ def getCurrentBookBorrower():
     book = Book.query.get(bookId)
     if book is None:
         return getError("no book found for id " + bookId)
+    if book.currentLendingId is None:
+        return getError("book is not currently lended"), 401
     lending = Lending.query.get(book.currentLendingId)
-    return Reader.query.get(lending.borrowerId).dict(), 200
+    return jsonify({"reader" : Reader.query.get(lending.borrowerId).dict()}), 200
 
 
 # get back a book #B

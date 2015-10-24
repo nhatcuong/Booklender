@@ -86,5 +86,6 @@ class Lending(db.Model):
     def dict(self):
         return {"id": self.id, "book": self.book.title, "borrower": self.borrower.name, "startDate": self.startDate}
 
-    def endLending(self):
+    def end(self):
         self.endDate = date.today()
+        db.session.add(self)
