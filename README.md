@@ -7,7 +7,7 @@ It will support basic functionnalities like :
 - Take back book you lended
 And more...
 
-I write it in Python and AngularJS, since I learned it recently and feel like do it for a training.
+I write it in Python and AngularJS, since I learned them recently and feel like practicing. The coming css thing will likely be SASS, so that I can compare it to LESS that I used for 2 years now.
 
 # README #
 
