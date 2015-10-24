@@ -11,7 +11,7 @@ I write it in Python and AngularJS, since I learned them recently and feel like 
 
 # README #
 
-This will describe how to get the program running in a mac. I will try to find out how to do it on windows and mac if there are needs.
+This will describe how to get the program running in a mac. I will try to find out how to do it on windows and linux if there are needs.
 
 Install pip
 
