@@ -1,4 +1,4 @@
-@import "../input";
+@import "../common_styles/input";
 
 *, *::before, *:after {
   box-sizing: border-box;
@@ -20,7 +20,8 @@
 }
 
 .main-column {
-  padding-left: 50px;
+  padding-left: 40px;
+  padding-right: 40px;
   padding-top: 50px;
 }
 

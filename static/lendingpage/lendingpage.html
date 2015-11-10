@@ -3,7 +3,10 @@
 <head lang="en">
     <meta charset="UTF-8">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic,300,300italic' rel='stylesheet' type='text/css'>
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="/static/bower_components/requirejs/require.js"></script>
+
     <script src="/static/lendingpage/lendingpage.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/lendingpage/lendingpage.css">
     <title>Booklender</title>
@@ -11,37 +14,41 @@
 <body ng-controller="BooksReadersController">
 
 <div id="books-column" class="main-column">
-    Add new book:
-    <form novalidate>
-        Title: <input type="text" ng-model="title"><br>
-        Author: <input type="text" ng-model="author"><br>
-        <button ng-click="createABook(title, author)">Save</button>
+    <div class="select-list">
+        <div class="select-list-title">Books</div>
+        <select ng-model="currentBookId" ng-change="onBookSelectionChange()">
+            <option value="{{book.id}}" ng-repeat="book in books | orderBy:'title'">
+                {{book.title}} - {{book.author}} - {{book.status}}
+            </option>
+        </select>
+    </div>
+    <br><br>
+    <form novalidate class="form-input-text">
+        <div class="form-title">Add a book:</div>
+        <input type="text" ng-model="title" placeholder="Title">
+        <input type="text" ng-model="author" placeholder="Author">
+        <input type="submit" ng-click="createABook(title, author)" value="Add">
     </form>
-
-    Book list
-    <select ng-model="currentBookId" ng-change="onBookSelectionChange()">
-        <option value="{{book.id}}" ng-repeat="book in books | orderBy:'title'">
-            {{book.title}} - {{book.author}} - {{book.status}}
-        </option>
-    </select><br>
 
 </div>
 
 <div id="action-column"><button ng-click="lendBookToReader()"> Lend It </button></div>
 
 <div id="readers-column" class="main-column">
-    Add new reader:
-    <form novalidate>
-        Name: <input type="text" ng-model="name"><br>
-        <button ng-click="createAReader(name)">Save</button>
+    <div class="select-list">
+        <div class="select-list-title">Readers</div>
+        <select ng-model="currentReaderId" ng-change="onReaderSelectionChange()">
+            <option value="{{reader.id}}" ng-repeat="reader in readers | orderBy:'name'">
+                {{reader.name}}
+            </option>
+        </select>
+    </div>
+    <br><br>
+    <form novalidate class="form-input-text">
+        <div class="form-title">Add a reader:</div>
+        <input type="text" ng-model="name" placeholder="Name">
+        <input type="submit" ng-click="createAReader(name)" value="Add">
     </form>
-
-    Reader list
-    <select ng-model="currentReaderId" ng-change="onReaderSelectionChange()">
-        <option value="{{reader.id}}" ng-repeat="reader in readers | orderBy:'name'">
-            {{reader.name}}
-        </option>
-    </select><br>
 
 </div>
 <br>

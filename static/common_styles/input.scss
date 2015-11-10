@@ -1,0 +1,56 @@
+@import "raw";
+
+$input-vertical-padding: 10px;
+
+$input_border: $bl_grey_border;
+$input_border_focus: $bl_blue;
+$input_button_background: $bl_grey_background;
+$input-text-line-height: 18px;
+$input-height: 42px;
+
+.input-common {
+  border-radius: 4px;
+  padding: ($input-height - $input-text-line-height)/2 8px;
+  font-size: $bl_font_size;
+  &:focus {
+    outline: none;
+  }
+}
+
+input[type="text"] {
+  @extend .input-common;
+  border: 1px solid $input_border;
+  margin: 0;
+  color: black;
+
+  &:focus {
+    outline: none;
+    border-color: $input_border_focus;
+  }
+}
+
+input[type="submit"] {
+  @extend .input-common;
+  color: white;
+  background-color: $input_button_background;
+  border: none;
+  cursor: pointer;
+}
+
+.form-input-text {
+  input {
+    margin-top: $input-vertical-padding;
+    display: block;
+    width: 100%;
+  }
+}
+
+.select-list {
+
+  select {
+    @extend .input-common;
+    width: 100%;
+    margin-top: 10px;
+    height: $input-height;
+  }
+}
