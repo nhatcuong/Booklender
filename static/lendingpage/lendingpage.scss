@@ -1,0 +1,43 @@
+@import "../common_styles/input";
+@import "../common_styles/navbar";
+
+$main-column-inner-padding: 40px;
+$main-column-outer-padding: 60px;
+
+*, *::before, *:after {
+  box-sizing: border-box;
+}
+
+#books-column {
+  float: left;
+  width: 40%;
+  padding-left: $main-column-outer-padding;
+  padding-right: $main-column-inner-padding;
+}
+
+#readers-column {
+  float: left;
+  width: 40%;
+  padding-left: $main-column-inner-padding;
+  padding-right: $main-column-outer-padding;
+}
+
+#action-column {
+  float:left;
+  width: 20%;
+  padding-top: 31px;
+
+  .main-action-button {
+    width: 80%;
+    margin: 0 10%;
+  }
+}
+
+.main-column {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+body {
+  font-family: 'Open Sans';
+}

@@ -1,4 +1,7 @@
+booklender.db
 .DS_Store
-.idea/*
-*/.idea/*
+**/.idea/*
+static/bower_components/*
 *.pyc
+**/.sass-cache/
+**/*.css.map

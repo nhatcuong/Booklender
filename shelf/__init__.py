@@ -40,7 +40,7 @@ import services
 @app.route('/')
 def redirect_to_homepage():
     # return flask.render_template(flask.url_for('static', filename="index.html"))
-    return app.send_static_file('index.html')
+    return app.send_static_file('lendingpage/lendingpage.html')
 
 if __name__ == '__main__':
     app.run()

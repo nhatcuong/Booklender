@@ -1,0 +1,8 @@
+{
+  "name": "booklender",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "requirejs": "2.1.20"
+  }
+}

@@ -24,14 +24,14 @@ def createBook():
 # obtain all books #B
 @app.route("/book/all", methods=['GET', 'POST'])
 def getAllBooks():
-    allBooks = Book.query.all();
+    allBooks = Book.query.all()
     return jsonify({"books": [book.dict() for book in allBooks]}), 200
 
 
 # R
 @app.route("/reader/all", methods=['GET', 'POST'])
 def getAllReaders():
-    allReaders = Reader.query.all();
+    allReaders = Reader.query.all()
     return jsonify({"readers": [reader.dict() for reader in allReaders]}), 200
 
 

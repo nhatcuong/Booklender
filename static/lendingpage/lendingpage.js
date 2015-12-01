@@ -1,3 +1,4 @@
+
 var app = angular.module("BookLender", []);
 
 var URLPREFIX = "http://127.0.0.1:5000";
@@ -97,8 +98,22 @@ app.controller("BooksReadersController",
             //alert($scope.currentReaderId);
         }
 
-        $scope.getBook
+        $scope.canLendBook = function() { //TODO more conditions here
+            return $scope.currentBookId && $scope.currentReaderId;
+        }
+
+        $scope.getBookStatusInString = function(book) {
+            switch (book.status) {
+                case "lended":
+                    return "lended";
+                case "on_shelf":
+                    return "on shelf";
+                return "on shelf";
+            }
+        }
 
         $scope.initBooks();
         $scope.initReaders();
+
+
     });
