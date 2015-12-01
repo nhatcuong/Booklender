@@ -8,6 +8,11 @@ $main-column-outer-padding: 60px;
   box-sizing: border-box;
 }
 
+#main-container {
+  max-width: 1200px;
+  margin:auto;
+}
+
 #books-column {
   float: left;
   width: 40%;
@@ -30,6 +35,12 @@ $main-column-outer-padding: 60px;
   .main-action-button {
     width: 80%;
     margin: 0 10%;
+  }
+
+  .main-status-label {
+    height: $input-height;
+    line-height: $input-height;
+    text-align: center;
   }
 }
 

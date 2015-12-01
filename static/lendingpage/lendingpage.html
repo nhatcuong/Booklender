@@ -13,53 +13,52 @@
     <title>Booklender</title>
 </head>
 <body ng-controller="BooksReadersController">
-
 <div id="navbar">
     <div class="logo">Booklender</div>
 </div>
+<div id="main-container">
+    <div id="books-column" class="main-column">
+        <div class="select-list input-group">
+            <div class="select-list-title">Books</div>
+            <select ng-model="currentBookId" ng-change="onBookSelectionChange()">
+                <option value="{{book.id}}" ng-repeat="book in books | orderBy:'title'">
+                    {{book.title}} - {{book.author}} | {{getBookStatusInString(book)}}
+                </option>
+            </select>
+        </div>
 
-<div id="books-column" class="main-column">
-    <div class="select-list input-group">
-        <div class="select-list-title">Books</div>
-        <select ng-model="currentBookId" ng-change="onBookSelectionChange()">
-            <option value="{{book.id}}" ng-repeat="book in books | orderBy:'title'">
-                {{book.title}} - {{book.author}} | {{getBookStatusInString(book)}}
-            </option>
-        </select>
+        <form novalidate class="form-input-text input-group">
+            <div class="form-title">Add a book:</div>
+            <input type="text" ng-model="title" placeholder="Title">
+            <input type="text" ng-model="author" placeholder="Author">
+            <input type="submit" ng-click="createABook(title, author)" value="Add">
+        </form>
+
     </div>
 
-    <form novalidate class="form-input-text input-group">
-        <div class="form-title">Add a book:</div>
-        <input type="text" ng-model="title" placeholder="Title">
-        <input type="text" ng-model="author" placeholder="Author">
-        <input type="submit" ng-click="createABook(title, author)" value="Add">
-    </form>
-
-</div>
-
-<div id="action-column">
-    <button class="main-action-button" ng-click="lendBookToReader()" ng-show="canLendBook()"> Lend it to</button>
-</div>
-
-<div id="readers-column" class="main-column">
-    <div class="select-list input-group">
-        <div class="select-list-title">Readers</div>
-        <select ng-model="currentReaderId" ng-change="onReaderSelectionChange()">
-            <option value="{{reader.id}}" ng-repeat="reader in readers | orderBy:'name'">
-                {{reader.name}}
-            </option>
-        </select>
+    <div id="action-column">
+        <button class="main-action-button" ng-click="lendBookToReader()" ng-show="canLendBook()">Lend to</button>
+        <div class="main-status-label" ng-show="isBookLendedToCurrentReader()">is lended to</div>
     </div>
 
-    <form novalidate class="form-input-text input-group">
-        <div class="form-title">Add a reader:</div>
-        <input type="text" ng-model="name" placeholder="Name">
-        <input type="submit" ng-click="createAReader(name)" value="Add">
-    </form>
+    <div id="readers-column" class="main-column">
+        <div class="select-list input-group">
+            <div class="select-list-title">Readers</div>
+            <select ng-model="currentReaderId" ng-change="onReaderSelectionChange()">
+                <option value="{{reader.id}}" ng-repeat="reader in readers | orderBy:'name'">
+                    {{reader.name}}
+                </option>
+            </select>
+        </div>
 
+        <form novalidate class="form-input-text input-group">
+            <div class="form-title">Add a reader:</div>
+            <input type="text" ng-model="name" placeholder="Name">
+            <input type="submit" ng-click="createAReader(name)" value="Add">
+        </form>
+
+    </div>
 </div>
-<br>
-<br>
 
 </body>
 </html>
