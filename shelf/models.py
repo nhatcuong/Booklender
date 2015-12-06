@@ -39,10 +39,12 @@ class Book(db.Model):
         db.session.add_all([self, reader])
 
     def getBackIfLended(self):
+        self.currentLendingId = None
         lending = self.obtainCurrentLending()
         if lending is not None:
             lending.end()
         self.status = BookStatus.ON_SHELF
+        db.session.add(self)
 
     def obtainCurrentLending(self):
         if (self.currentLendingId is not None):

@@ -2,7 +2,7 @@ from flask import request, jsonify
 
 from shelf import app, db
 from services_helper import getData, getError, getSuccess
-from shelf.models import Book, Reader, Lending
+from shelf.models import Book, Reader, Lending, BookStatus
 
 
 # create a book #B
@@ -77,6 +77,19 @@ def actionLend():
     return getSuccess("lended to reader " + reader.name), 200
 
 
+# get back current book
+@app.route("/action/getBookBack/<int:bookId>", methods=['GET', 'POST'])
+def actionGetBack(bookId):
+    if bookId <= 0:
+        return getError("book Id must be positive int")
+    book = Book.query.get(bookId)
+    if book.status != BookStatus.LENDED:
+        return getError("book is not currently lended " + bookId)
+    book.getBackIfLended()
+    db.session.commit()
+    return jsonify({"book": book.dict()})
+
+
 @app.route("/reader/currentBorrowerOfBook", methods=['GET', 'POST'])
 def getCurrentBookBorrower():
     data = getData(request)
@@ -90,12 +103,16 @@ def getCurrentBookBorrower():
     if book.currentLendingId is None:
         return getError("book is not currently lended"), 401
     lending = Lending.query.get(book.currentLendingId)
-    return jsonify({"reader" : Reader.query.get(lending.borrowerId).dict()}), 200
+    return jsonify({"reader": Reader.query.get(lending.borrowerId).dict()}), 200
 
 
-# get back a book #B
-
-# get a book informations including current borrower #B
+@app.route("/purge", methods=['GET', 'POST'])
+def purge():
+    Book.query.delete()
+    Reader.query.delete()
+    Lending.query.delete()
+    db.session.commit()
+    return getSuccess("done")
 
 # get a books borrowing history #B
 

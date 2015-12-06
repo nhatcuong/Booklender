@@ -41,6 +41,10 @@ $main-column-outer-padding: 60px;
     height: $input-height;
     line-height: $input-height;
     text-align: center;
+    
+    + .second-action-button {
+      margin-top: 20px;
+    }
   }
 }
 

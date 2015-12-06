@@ -74,6 +74,13 @@ input[type="submit"] {
   height: $input-height;
 }
 
+.second-action-button {
+  color: $bl_blue_border;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
 .input-group {
-  margin-bottom: 60px;
+  margin-bottom: 140px;
 }

@@ -18,9 +18,9 @@
 </div>
 <div id="main-container">
     <div id="books-column" class="main-column">
-        <div class="select-list input-group">
+        <div class="select-list input-group" ng-show="books.length">
             <div class="select-list-title">Books</div>
-            <select ng-model="currentBookId" ng-change="onBookSelectionChange()">
+            <select ng-model="currentBookId">
                 <option value="{{book.id}}" ng-repeat="book in books | orderBy:'title'">
                     {{book.title}} - {{book.author}} | {{getBookStatusInString(book)}}
                 </option>
@@ -38,13 +38,16 @@
 
     <div id="action-column">
         <button class="main-action-button" ng-click="lendBookToReader()" ng-show="canLendBook()">Lend to</button>
-        <div class="main-status-label" ng-show="isBookLendedToCurrentReader()">is lended to</div>
+        <div ng-show="isBookLendedToCurrentReader()">
+            <div class="main-status-label">is lended to</div>
+            <div class="second-action-button" ng-click="getBackSelectedBook()">I've got it back!</div>
+        </div>
     </div>
 
     <div id="readers-column" class="main-column">
-        <div class="select-list input-group">
+        <div class="select-list input-group" ng-show="readers.length">
             <div class="select-list-title">Readers</div>
-            <select ng-model="currentReaderId" ng-change="onReaderSelectionChange()">
+            <select ng-model="currentReaderId">
                 <option value="{{reader.id}}" ng-repeat="reader in readers | orderBy:'name'">
                     {{reader.name}}
                 </option>
