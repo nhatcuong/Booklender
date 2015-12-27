@@ -29,6 +29,15 @@ Install all requirements
 pip install -r requirements.txt
 ```
 
+Generate code :
+Install sass
+
+```
+gem install sass
+cd $project_root/static/lendingpage
+sass lendingpage.scss lendingpage.css
+```
+
 Start the server
 
 ```
