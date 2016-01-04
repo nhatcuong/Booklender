@@ -2,6 +2,7 @@ import os
 import logging
 
 from flask import Flask
+import flask
 from flask_sqlalchemy import SQLAlchemy
 
 basedir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
@@ -24,7 +25,6 @@ class Config(object):
 
 
 app = Flask(__name__, static_folder=os.path.join(basedir, "static"))
-app.debug = True
 app.config.from_object(Config())
 
 db = SQLAlchemy(app)
@@ -33,10 +33,14 @@ import models
 dbname = os.path.join(basedir, "booklender.db")
 if not os.path.isfile(dbname):
     logger.info("create db file")
-    db.create_all()  # all tables have been declared in models
-    models.User.create_static(username="nhatcuong", password="secret_nhatcuong")
-    models.User.create_static(username="thuypi", password="secret_thuypi")
-    db.session.commit()
-
+    db.create_all() #all tables have been declared in models
 
 import services
+
+@app.route('/')
+def redirect_to_homepage():
+    # return flask.render_template(flask.url_for('static', filename="index.html"))
+    return app.send_static_file('lendingpage/lendingpage.html')
+
+if __name__ == '__main__':
+    app.run()

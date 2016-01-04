@@ -1,23 +1,12 @@
-from flask import request, jsonify, g
+from flask import request, jsonify
 
 from shelf import app, db
 from services_helper import getData, getError, getSuccess
 from shelf.models import Book, Reader, Lending, BookStatus
-from auth_services import require_auth
 
-@app.route('/')
-@require_auth
-def redirect_to_homepage():
-    # return flask.render_template(flask.url_for('static', filename="index.html"))
-    return app.send_static_file('lendingpage/lendingpage.html')
-
-
-if __name__ == '__main__':
-    app.run()
 
 # create a book #B
 @app.route("/book/create", methods=['GET', 'POST'])
-@require_auth
 def createBook():
     data = getData(request)
     if data is None:
@@ -27,7 +16,7 @@ def createBook():
     if (title is None or len(title) == 0):
         return getError("book title is required"), 401  # client error
     # todo check pair(title, author) is unique
-    book = Book(title=title, author=author, userId=g.user.id).create()
+    book = Book(title=title, author=author).create()
     db.session.commit()
     return jsonify({"newBook": book.dict()}), 201
 
@@ -48,7 +37,6 @@ def getAllReaders():
 
 # create a reader #R
 @app.route("/reader/create", methods=['GET', 'POST'])
-@require_auth
 def createReader():
     data = getData(request)
     if data is None:
@@ -56,7 +44,7 @@ def createReader():
     name = data.get('name');
     if (name is None or len(name) == 0):
         return getError("name is required"), 401
-    reader = Reader(name=name, userId=g.user.id).create()
+    reader = Reader(name=name).create()
     db.session.commit()
     return jsonify({"newReader": reader.dict()}), 201
 
