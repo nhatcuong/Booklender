@@ -5,3 +5,4 @@ static/bower_components/*
 *.pyc
 **/.sass-cache/
 **/*.css.map
+node_modules

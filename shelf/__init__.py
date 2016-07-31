@@ -28,15 +28,14 @@ app = Flask(__name__, static_folder=os.path.join(basedir, "static"))
 app.config.from_object(Config())
 
 db = SQLAlchemy(app)
-import models
 
+import shelf.models
 dbname = os.path.join(basedir, "booklender.db")
 if not os.path.isfile(dbname):
     logger.info("create db file")
     db.create_all() #all tables have been declared in models
 
-import services
-
+import shelf.services
 @app.route('/')
 def redirect_to_homepage():
     # return flask.render_template(flask.url_for('static', filename="index.html"))

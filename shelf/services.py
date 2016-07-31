@@ -1,7 +1,7 @@
 from flask import request, jsonify
 
 from shelf import app, db
-from services_helper import getData, getError, getSuccess
+from shelf.services_helper import getData, getError, getSuccess
 from shelf.models import Book, Reader, Lending, BookStatus
 
 
