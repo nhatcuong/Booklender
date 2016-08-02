@@ -4,6 +4,7 @@ var SelectMixin = {
       <div className="select-list input-group">
         <div className="select-list-title">{this.title}</div>
         <select value={this.props.selected} onChange={this.props.onSelect}>
+          <option value={0}>--</option>
           {this.getOptions()}
         </select>
       </div>
@@ -13,12 +14,13 @@ var SelectMixin = {
 
 var SelectAddBoxMixin = {
   getInitialState: function() {
-    return {list: [], selectedItem: -1};
+    return {list: []};
   },
   componentDidMount: function() {
     this.updateList();
   },
   getItemFromId: function(id) {
+    if (!id) return {id:0};
     var results = this.state.list.filter(
       function(item) {return item.id == id}
     );
@@ -36,7 +38,7 @@ var BookSelect = React.createClass({
     return this.props.list.map(
       function (book) {
         return (
-          <option key={book.id} value={book.id}>{book.title} - {book.author}</option>
+          <option key={book.id} value={book.id}>{book.title} - {book.author} - {book.status}</option>
         )
       }
     );
@@ -102,9 +104,9 @@ var BookBox = React.createClass({
     apiAddBook(this, book.title, book.author,
       function(data) {
         this.setState({
-          list: this.state.list.concat([data.newBook]),
-          selectedItem: data.newBook.id
-        })
+          list: this.state.list.concat([data.newBook])
+        });
+        this.props.onSelect(data.newReader);
       },
       function(xhr, status, err) {
 
@@ -114,7 +116,7 @@ var BookBox = React.createClass({
   render: function () {
     return (
       <div className="bookBox">
-        <BookSelect selected={this.state.selectedItem} list={this.state.list} onSelect={this.handleSelect}/>
+        <BookSelect selected={this.props.selected} list={this.state.list} onSelect={this.handleSelect}/>
         <AddBookForm onSubmit={this.handleAddSubmit}/>
       </div>
     );
@@ -195,7 +197,7 @@ var BorrowerBox = React.createClass({
   },
   render: function () {
     return (
-      <div className="bookBox">
+      <div className="borrowerBox">
         <BorrowerSelect selected={this.props.selected} list={this.state.list} onSelect={this.handleSelect}/>
         <AddBorrowerForm onSubmit={this.handleAddSubmit}/>
       </div>
@@ -203,11 +205,52 @@ var BorrowerBox = React.createClass({
   }
 });
 
+var ActionBox = React.createClass({
+  render: function() {
+    var canLendBook =
+      this.props.book.id && this.props.borrower.id &&
+      this.props.book.status != "lended";
+    var canGetBookBack =
+      this.props.book && this.props.borrower &&
+      this.props.book.readerId == this.props.borrower.id;
+    var button;
+    if (canLendBook) {
+      button = <LendButton book={this.props.book} borrower={this.props.borrower} onLendBook={this.props.onLendBook}/>
+    }
+    else if (canGetBookBack) {
+      button = <button>{"Get it back"}</button>
+    }
+    return (
+      <div className="actionBox">
+        {button}
+      </div>
+    )
+  }
+});
+
+var LendButton = React.createClass({
+  lendFunction: function() {
+    apiLendBook(this, this.props.book.id, this.props.borrower.id,
+      function() {
+        this.props.onLendBook();
+      },
+      function() {}
+    )
+  },
+  render: function() {
+    return (
+      <button className="lendButton actionButton" onClick={this.lendFunction}>
+        {"Lend it to"}
+      </button>
+    );
+  }
+});
+
 var LendingBox = React.createClass({
   getInitialState: function() {
     return {
-      book: {title: '', author: '', id: -1},
-      borrower: {name: '', id: -1}
+      book: {id: 0},
+      borrower: {id: 0}
     };
   },
   updateSelectBook: function(book) {
@@ -216,11 +259,19 @@ var LendingBox = React.createClass({
   updateSelectBorrower: function(borr) {
     this.setState({borrower: borr});
   },
+  handleLendBook: function() {
+    var updatedBook = this.state.book;
+    updatedBook.status = "lended";
+    updatedBook.readerId = this.state.borrower.id;
+    this.setState({book: updatedBook});
+  },
   render: function() {
     return (
       <div className="lendingBox">
-        currentBorrower: {this.state.borrower.name}
-        <BorrowerBox selected={this.state.borrower.id} onSelect={this.updateSelectBorrower}/>
+          <BookBox selected={this.state.book.id} onSelect={this.updateSelectBook}/>
+          <BorrowerBox selected={this.state.borrower.id} onSelect={this.updateSelectBorrower}/>
+          <ActionBox book={this.state.book} borrower={this.state.borrower}
+                     onLendBook={this.handleLendBook}/>
       </div>
     )
   }
@@ -228,7 +279,7 @@ var LendingBox = React.createClass({
 
 ReactDOM.render(
   <LendingBox/>,
-  document.getElementById('content-right')
+  document.getElementById('content')
 );
 
 // ReactDOM.render(
