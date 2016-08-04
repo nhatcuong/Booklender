@@ -52,8 +52,30 @@ var apiLendBook = function(caller, bookId, borrowerId, success, error) {
     data: {bookId: bookId, readerId: borrowerId},
     success: success.bind(caller),
     error: error.bind(caller)
+  });
+};
+
+var apiGetBack = function(caller, bookId, success, error) {
+  $.ajax({
+    url: URLPREFIX + "/action/getBookBack/" + bookId,
+    type: 'POST',
+    success: success.bind(caller),
+    error: error.bind(caller)
+  });
+};
+
+var apiGetCurrentBorrowerOfBook = function(caller, bookId, success, error) {
+  $.ajax({
+    url: URLPREFIX + "/reader/currentBorrowerOfBook",
+    type: 'GET',
+    dataType: 'json',
+    data: {bookId: bookId},
+    success: success.bind(caller),
+    error: error.bind(caller)
   })
 }
+
+
 
 //# sourceMappingURL=api_react.js.map
 //# sourceMappingURL=api_react.js.map

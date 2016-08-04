@@ -106,7 +106,7 @@ var BookBox = React.createClass({
         this.setState({
           list: this.state.list.concat([data.newBook])
         });
-        this.props.onSelect(data.newReader);
+        this.props.onSelect(data.newBook);
       },
       function(xhr, status, err) {
 
@@ -212,13 +212,13 @@ var ActionBox = React.createClass({
       this.props.book.status != "lended";
     var canGetBookBack =
       this.props.book && this.props.borrower &&
-      this.props.book.readerId == this.props.borrower.id;
+      this.props.book.borrowerId == this.props.borrower.id;
     var button;
     if (canLendBook) {
       button = <LendButton book={this.props.book} borrower={this.props.borrower} onLendBook={this.props.onLendBook}/>
     }
     else if (canGetBookBack) {
-      button = <button>{"Get it back"}</button>
+      button = <GetBackButton book={this.props.book} onGetBookBack={this.props.onGetBookBack}/>
     }
     return (
       <div className="actionBox">
@@ -246,6 +246,24 @@ var LendButton = React.createClass({
   }
 });
 
+var GetBackButton = React.createClass({
+  getBackFunction: function() {
+    apiGetBack(this, this.props.book.id,
+      function() {
+        this.props.onGetBookBack();
+      },
+      function() {}
+    )
+  },
+  render: function() {
+    return (
+      <button className="lendButton actionButton" onClick={this.getBackFunction}>
+        {"Get it back"}
+      </button>
+    );
+  }
+});
+
 var LendingBox = React.createClass({
   getInitialState: function() {
     return {
@@ -254,7 +272,19 @@ var LendingBox = React.createClass({
     };
   },
   updateSelectBook: function(book) {
-    this.setState({book: book});
+    if (book.status == "lended") {
+      apiGetCurrentBorrowerOfBook(this, book.id,
+        function(data) {
+          book.borrowerId = data.reader.id;
+          this.setState({
+            borrower: data.reader,
+            book: book
+          });
+        },
+        function() {}
+      );
+    }
+    else this.setState({book: book});
   },
   updateSelectBorrower: function(borr) {
     this.setState({borrower: borr});
@@ -262,7 +292,13 @@ var LendingBox = React.createClass({
   handleLendBook: function() {
     var updatedBook = this.state.book;
     updatedBook.status = "lended";
-    updatedBook.readerId = this.state.borrower.id;
+    updatedBook.borrowerId = this.state.borrower.id;
+    this.setState({book: updatedBook});
+  },
+  handleGetBookBack: function() {
+    var updatedBook = this.state.book;
+    updatedBook.status = "on_shelf";
+    updatedBook.borrowerId = undefined;
     this.setState({book: updatedBook});
   },
   render: function() {
@@ -271,7 +307,9 @@ var LendingBox = React.createClass({
           <BookBox selected={this.state.book.id} onSelect={this.updateSelectBook}/>
           <BorrowerBox selected={this.state.borrower.id} onSelect={this.updateSelectBorrower}/>
           <ActionBox book={this.state.book} borrower={this.state.borrower}
-                     onLendBook={this.handleLendBook}/>
+                     onLendBook={this.handleLendBook}
+                     onGetBookBack={this.handleGetBookBack}
+          />
       </div>
     )
   }
@@ -281,13 +319,3 @@ ReactDOM.render(
   <LendingBox/>,
   document.getElementById('content')
 );
-
-// ReactDOM.render(
-//   <BookBox/>,
-//   document.getElementById('content-left')
-// );
-//
-// ReactDOM.render(
-//   <BorrowerBox/>,
-//   document.getElementById('content-right')
-// );
