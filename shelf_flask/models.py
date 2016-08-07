@@ -1,6 +1,6 @@
 from datetime import date
 
-from shelf import db
+from shelf_flask import db
 
 
 def enum(**enums):

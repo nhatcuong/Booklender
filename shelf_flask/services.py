@@ -1,8 +1,8 @@
 from flask import request, jsonify
 
-from shelf import app, db
-from shelf.services_helper import getData, getError, getSuccess
-from shelf.models import Book, Reader, Lending, BookStatus
+from shelf_flask import app, db
+from shelf_flask.services_helper import getData, getError, getSuccess
+from shelf_flask.models import Book, Reader, Lending, BookStatus
 
 
 # create a book #B

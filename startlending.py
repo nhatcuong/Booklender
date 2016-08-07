@@ -1,2 +1,2 @@
-from shelf import app
+from shelf_flask import app
 app.run()

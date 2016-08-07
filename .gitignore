@@ -1,4 +1,3 @@
-booklender.db
 .DS_Store
 **/.idea/*
 static/bower_components/*
@@ -8,3 +7,8 @@ static/bower_components/*
 node_modules
 
 static/js
+
+# db
+*.db
+*.sqlite*
+
