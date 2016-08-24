@@ -6,8 +6,6 @@ static/bower_components/*
 **/*.css.map
 node_modules
 
-static/js
-
 # db
 *.db
 *.sqlite*
