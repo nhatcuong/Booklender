@@ -24,9 +24,10 @@ def lend(request):
     if error_response_book or error_response_reader:
         return error_response_book or error_response_reader
     if book.current_lending_id is not None:
-        return Response({'error': 'book already lent to someone'})
+        return Response({'error': 'book already lent to someone'},
+                        status.HTTP_400_BAD_REQUEST)
     book.lend_to_reader(reader)
-    return Response(status=status.HTTP_202_ACCEPTED)
+    return Response({'done': 'sucess'}, status=status.HTTP_202_ACCEPTED)
 
 
 @api_view(http_method_names=('POST',))
@@ -35,10 +36,10 @@ def get_back(request):
     if error_response:
         return error_response
     book.get_back_if_lended()
-    return Response(status=status.HTTP_202_ACCEPTED)
+    return Response({'done': 'sucess'},status=status.HTTP_202_ACCEPTED)
 
 
-@api_view(http_method_names=('POST',))
+@api_view(http_method_names=('GET',))
 def current_borrower_of_book(request):
     book, error_response = utils.get_book(request)
     if error_response:

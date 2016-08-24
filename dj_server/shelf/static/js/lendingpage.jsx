@@ -27,7 +27,7 @@ var SelectAddBoxMixin = {
     return results[0];
   },
   handleSelect: function(e) {
-    this.props.onSelect(this.getItemFromId(e.target.value));
+    this.props.onSelect(this.getItemFromId(parseInt(e.target.value)));
   },
 };
 
@@ -93,7 +93,7 @@ var BookBox = React.createClass({
   updateList: function() {
     apiAllBooks(this,
       function(data) {
-        this.setState({list: data.books})
+        this.setState({list: data})
       },
       function(xhr, status, err) {
 
@@ -104,9 +104,9 @@ var BookBox = React.createClass({
     apiAddBook(this, book.title, book.author,
       function(data) {
         this.setState({
-          list: this.state.list.concat([data.newBook])
+          list: this.state.list.concat([data])
         });
-        this.props.onSelect(data.newBook);
+        this.props.onSelect(data);
       },
       function(xhr, status, err) {
 
@@ -151,7 +151,7 @@ var AddBorrowerForm = React.createClass({
       return;
     }
     this.props.onSubmit({name: name});
-    this.setState({name: name});
+    this.setState({name: ''});
   },
   render: function () {
     return (
@@ -175,7 +175,7 @@ var BorrowerBox = React.createClass({
   updateList: function() {
     apiAllBorrowers(this,
       function(data) {
-        this.setState({list: data.readers})
+        this.setState({list: data})
       },
       function(xhr, status, err) {
 
@@ -186,9 +186,9 @@ var BorrowerBox = React.createClass({
     apiAddBorrower(this, borrower.name,
       function(data) {
         this.setState({
-          list: this.state.list.concat([data.newReader])
+          list: this.state.list.concat([data])
         });
-        this.props.onSelect(data.newReader);
+        this.props.onSelect(data);
       },
       function(xhr, status, err) {
 
@@ -274,10 +274,10 @@ var LendingBox = React.createClass({
   updateSelectBook: function(book) {
     if (book.status == "lended") {
       apiGetCurrentBorrowerOfBook(this, book.id,
-        function(data) {
-          book.borrowerId = data.reader.id;
+        function(borrower) {
+          book.borrowerId = borrower.id;
           this.setState({
-            borrower: data.reader,
+            borrower: borrower,
             book: book
           });
         },

@@ -12,3 +12,6 @@ static/js
 *.db
 *.sqlite*
 
+# log
+**.log
+

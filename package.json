@@ -4,11 +4,19 @@
   "description": "This project is about creating a web based application to manage the books you lended to people. It will support basic functionnalities like : - Add new book - Add new borrower - Lend a book to a borrower - Check to whom you have lended a book - Take back book you lended And more...",
   "main": "index.js",
   "dependencies": {
-    "babel-cli": "^6.11.4"
+    "babel-cli": "^6.11.4",
+    "npm-watch": "latest"
+  },
+  "watch": {
+    "build": {
+      "patterns": ["*"],
+      "extensions": "jsx"
+    }
   },
   "scripts": {
-    "build": "babel static/lendingpage -d static/js/lendingpage -s",
-    "build:watch": "watch 'npm run build' static/lendingpage",
+    "watch": "npm-watch",
+    "build": "babel dj_server/**/*.jsx -d . -s",
+    "build:watch": "watch 'npm run build' dj_server --wait=5",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

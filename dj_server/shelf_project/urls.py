@@ -19,5 +19,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('shelf.api.urls'))
+    url(r'', include('shelf.urls'))
 ]
