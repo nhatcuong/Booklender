@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 from datetime import datetime
+from enum import Enum
 
 
 class Book(models.Model):
@@ -11,6 +13,7 @@ class Book(models.Model):
     author = models.CharField(max_length=180, null=True)
     status = models.CharField(max_length=20, choices=BOOK_STATUS, default=ON_SHELF)
     current_lending = models.ForeignKey('Lending', null=True, related_name='+')
+    user = models.ForeignKey(User)
 
     def lend_to_reader(self, reader):
         self.get_back_if_lended()
@@ -27,8 +30,14 @@ class Book(models.Model):
         self.save()
 
 
+class BookStatus(Enum):
+    on_shelf = 'on_shelf'
+    lended = 'lended'
+
+
 class Reader(models.Model):
     name = models.CharField(max_length=100)
+    user = models.ForeignKey(User)
 
 
 class Lending(models.Model):

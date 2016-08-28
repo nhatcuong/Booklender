@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework import permissions
 
 from shelf.api import utils
 from shelf.api.serializers import BookSerializer, ReaderSerializer
@@ -8,16 +9,35 @@ from shelf.models import Book, Reader, Lending
 
 
 class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all().order_by('title')
     serializer_class = BookSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        qs = Book.objects.all()
+        qs = qs.filter(user_id=self.request.user.id)
+        qs = qs.order_by('title')
+        return qs
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ReaderViewSet(viewsets.ModelViewSet):
-    queryset = Reader.objects.all().order_by('name')
     serializer_class = ReaderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        qs = Reader.objects.all()
+        qs = qs.filter(user_id=self.request.user.id)
+        qs = qs.order_by('name')
+        return qs
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 @api_view(http_method_names=('POST',))
+@permission_classes((permissions.IsAuthenticated,))
 def lend(request):
     book, error_response_book = utils.get_book(request)
     reader, error_response_reader = utils.get_reader(request)
@@ -31,6 +51,7 @@ def lend(request):
 
 
 @api_view(http_method_names=('POST',))
+@permission_classes((permissions.IsAuthenticated,))
 def get_back(request):
     book, error_response = utils.get_book(request)
     if error_response:
@@ -40,6 +61,7 @@ def get_back(request):
 
 
 @api_view(http_method_names=('GET',))
+@permission_classes((permissions.IsAuthenticated,))
 def current_borrower_of_book(request):
     book, error_response = utils.get_book(request)
     if error_response:
@@ -49,13 +71,15 @@ def current_borrower_of_book(request):
         borrower = Reader.objects.get(pk=borrower_id)
         return Response(ReaderSerializer(borrower).data,
                         status.HTTP_200_OK)
-    return Response({'error': 'book is not currently lent'},
+    return Response({'error': 'book is not currently lended'},
                     status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(http_method_names=('GET', 'POST',))
-def purge(_):
-    Book.objects.all().delete()
-    Reader.objects.all().delete()
-    Lending.objects.all().delete()
-    return Response(status=status.HTTP_202_ACCEPTED)
+def purge(request):
+    if request.user.is_superuser:
+        Book.objects.all().delete()
+        Reader.objects.all().delete()
+        Lending.objects.all().delete()
+        return Response(status=status.HTTP_202_ACCEPTED)
+    return Response(status=status.HTTP_404_NOT_FOUND)
