@@ -7,9 +7,33 @@
           rel='stylesheet' type='text/css'>
   {% block head_javascript %}{% endblock %}
   {% block style_sheets %}{% endblock %}
+  {% block libs_js%}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  {% endblock %}
+  <script>
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+  </script>
 </head>
 <body>
   {% block content %}{% endblock %}
-  <div style="display: none;">{% csrf_token %}</div>
+  <form style="display: none;"> {% csrf_token %} </form>
 </body>
 </html>

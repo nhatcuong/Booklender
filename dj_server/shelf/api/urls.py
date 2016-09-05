@@ -10,8 +10,8 @@ router.register(r'readers', ReaderViewSet, base_name='reader')
 
 urlpatterns = [
     url(r'', include(router.urls)),
-    url(r'lend/$', lend),
-    url(r'getBack/$', get_back),
-    url(r'currentBorrowerOfBook/$', current_borrower_of_book),
+    url(r'lend/$', lend, name='lend'),
+    url(r'getBack/$', get_back, name='get_back'),
+    url(r'currentBorrowerOfBook/$', current_borrower_of_book, name='current_borrower_of_book'),
     url(r'purge/$', purge),
 ]

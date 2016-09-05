@@ -15,6 +15,9 @@ def get_book(request):
     except ObjectDoesNotExist:
         return None, Response({'error': 'book not found'},
                               status.HTTP_404_NOT_FOUND)
+    if book.user_id != request.user.id:
+        return None, Response({'error': 'not for this user'},
+                              status.HTTP_401_UNAUTHORIZED)
     return book, None
 
 
@@ -28,6 +31,9 @@ def get_reader(request):
     except ObjectDoesNotExist:
         return None, Response({'error': 'reader not found'},
                               status.HTTP_404_NOT_FOUND)
+    if reader.user_id != request.user.id:
+        return None, Response({'error': 'not for this user'},
+                              status.HTTP_401_UNAUTHORIZED)
     return reader, None
 
 
