@@ -1,0 +1,61 @@
+@import "common/input";
+
+$main-column-inner-padding: 40px;
+$main-column-outer-padding: 60px;
+
+*, *::before, *:after {
+  box-sizing: border-box;
+}
+
+#content {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.lendingBox {
+  .bookBox {
+    float: left;
+    width: 40%;
+    padding-left: $main-column-outer-padding;
+    padding-right: $main-column-inner-padding;
+  }
+  .borrowerBox {
+    float: left;
+    width: 40%;
+    padding-left: $main-column-inner-padding;
+    padding-right: $main-column-outer-padding;
+  }
+  .actionBox {
+    float: left;
+    width: 20%;
+    padding-top: 31px;
+
+    .main-action-button {
+      width: 80%;
+      margin: 0 10%;
+    }
+
+    .main-status-label {
+      height: $input-height;
+      line-height: $input-height;
+      text-align: center;
+
+      + .second-action-button {
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.main-column {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+body {
+  font-family: 'Open Sans';
+}
+
+input, textarea, keygen, select, button {
+  font-family: 'Open Sans';
+}

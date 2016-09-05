@@ -8,22 +8,27 @@
     "npm-watch": "latest"
   },
   "watch": {
-    "build": {
+    "build-js": {
       "patterns": ["*"],
       "extensions": "jsx"
+    },
+    "build-css": {
+      "patterns": ["*"],
+      "extensions": "scss"
     }
   },
   "scripts": {
     "watch": "npm-watch",
-    "build": "babel dj_server/**/*.jsx -d . -s",
-    "build:watch": "watch 'npm run build' dj_server --wait=5",
+    "build-js": "babel dj_server/**/*.jsx -d . -s",
+    "build-css": "node-sass -r . -o . css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
-    "watch": "^0.19.1"
+    "watch": "^0.19.1",
+    "node-sass": "^3.9.0"
   },
   "repository": {
     "type": "git",

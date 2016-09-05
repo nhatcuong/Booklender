@@ -13,20 +13,22 @@ var SelectMixin = {
 };
 
 var SelectAddBoxMixin = {
-  getInitialState: function() {
+  getInitialState: function () {
     return {list: []};
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     this.updateList();
   },
-  getItemFromId: function(id) {
-    if (!id) return {id:0};
+  getItemFromId: function (id) {
+    if (!id) return {id: 0};
     var results = this.state.list.filter(
-      function(item) {return item.id == id}
+      function (item) {
+        return item.id == id
+      }
     );
     return results[0];
   },
-  handleSelect: function(e) {
+  handleSelect: function (e) {
     this.props.onSelect(this.getItemFromId(parseInt(e.target.value)));
   },
 };
@@ -55,19 +57,19 @@ var AddBookForm = React.createClass({
   handleAuthorChange: function (e) {
     this.setState({author: e.target.value})
   },
-  handleSubmit: function(e) {
+  handleSubmit: function (e) {
     e.preventDefault();
     var title = this.state.title.trim();
     var author = this.state.author.trim();
     if (!title || !author) {
       return;
     }
-    this.props.onSubmit({title: title, author:author});
+    this.props.onSubmit({title: title, author: author});
     this.setState({title: '', author: ''});
   },
   render: function () {
     return (
-      <form className="addForm" onSubmit={this.handleSubmit}>
+      <form className="addForm formInputText" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Title"
@@ -90,25 +92,25 @@ var AddBookForm = React.createClass({
 
 var BookBox = React.createClass({
   mixins: [SelectAddBoxMixin],
-  updateList: function() {
+  updateList: function () {
     apiAllBooks(this,
-      function(data) {
+      function (data) {
         this.setState({list: data})
       },
-      function(xhr, status, err) {
+      function (xhr, status, err) {
 
       }
     );
   },
-  handleAddSubmit: function(book) {
+  handleAddSubmit: function (book) {
     apiAddBook(this, book.title, book.author,
-      function(data) {
+      function (data) {
         this.setState({
           list: this.state.list.concat([data])
         });
         this.props.onSelect(data);
       },
-      function(xhr, status, err) {
+      function (xhr, status, err) {
 
       }
     )
@@ -144,7 +146,7 @@ var AddBorrowerForm = React.createClass({
   handleNameChange: function (e) {
     this.setState({name: e.target.value})
   },
-  handleSubmit: function(e) {
+  handleSubmit: function (e) {
     e.preventDefault();
     var name = this.state.name.trim();
     if (!name) {
@@ -155,7 +157,7 @@ var AddBorrowerForm = React.createClass({
   },
   render: function () {
     return (
-      <form className="addForm" onSubmit={this.handleSubmit}>
+      <form className="addForm formInputText" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Name"
@@ -172,25 +174,25 @@ var AddBorrowerForm = React.createClass({
 
 var BorrowerBox = React.createClass({
   mixins: [SelectAddBoxMixin],
-  updateList: function() {
+  updateList: function () {
     apiAllBorrowers(this,
-      function(data) {
+      function (data) {
         this.setState({list: data})
       },
-      function(xhr, status, err) {
+      function (xhr, status, err) {
 
       }
     );
   },
-  handleAddSubmit: function(borrower) {
+  handleAddSubmit: function (borrower) {
     apiAddBorrower(this, borrower.name,
-      function(data) {
+      function (data) {
         this.setState({
           list: this.state.list.concat([data])
         });
         this.props.onSelect(data);
       },
-      function(xhr, status, err) {
+      function (xhr, status, err) {
 
       }
     )
@@ -206,7 +208,7 @@ var BorrowerBox = React.createClass({
 });
 
 var ActionBox = React.createClass({
-  render: function() {
+  render: function () {
     var canLendBook =
       this.props.book.id && this.props.borrower.id &&
       this.props.book.status != "lended";
@@ -229,15 +231,16 @@ var ActionBox = React.createClass({
 });
 
 var LendButton = React.createClass({
-  lendFunction: function() {
+  lendFunction: function () {
     apiLendBook(this, this.props.book.id, this.props.borrower.id,
-      function() {
+      function () {
         this.props.onLendBook();
       },
-      function() {}
+      function () {
+      }
     )
   },
-  render: function() {
+  render: function () {
     return (
       <button className="lendButton actionButton" onClick={this.lendFunction}>
         {"Lend it to"}
@@ -247,15 +250,16 @@ var LendButton = React.createClass({
 });
 
 var GetBackButton = React.createClass({
-  getBackFunction: function() {
+  getBackFunction: function () {
     apiGetBack(this, this.props.book.id,
-      function() {
+      function () {
         this.props.onGetBookBack();
       },
-      function() {}
+      function () {
+      }
     )
   },
-  render: function() {
+  render: function () {
     return (
       <button className="lendButton actionButton" onClick={this.getBackFunction}>
         {"Get it back"}
@@ -265,51 +269,52 @@ var GetBackButton = React.createClass({
 });
 
 var LendingBox = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       book: {id: 0},
       borrower: {id: 0}
     };
   },
-  updateSelectBook: function(book) {
+  updateSelectBook: function (book) {
     if (book.status == "lended") {
       apiGetCurrentBorrowerOfBook(this, book.id,
-        function(borrower) {
+        function (borrower) {
           book.borrowerId = borrower.id;
           this.setState({
             borrower: borrower,
             book: book
           });
         },
-        function() {}
+        function () {
+        }
       );
     }
     else this.setState({book: book});
   },
-  updateSelectBorrower: function(borr) {
+  updateSelectBorrower: function (borr) {
     this.setState({borrower: borr});
   },
-  handleLendBook: function() {
+  handleLendBook: function () {
     var updatedBook = this.state.book;
     updatedBook.status = "lended";
     updatedBook.borrowerId = this.state.borrower.id;
     this.setState({book: updatedBook});
   },
-  handleGetBookBack: function() {
+  handleGetBookBack: function () {
     var updatedBook = this.state.book;
     updatedBook.status = "on_shelf";
     updatedBook.borrowerId = undefined;
     this.setState({book: updatedBook});
   },
-  render: function() {
+  render: function () {
     return (
       <div className="lendingBox">
-          <BookBox selected={this.state.book.id} onSelect={this.updateSelectBook}/>
-          <BorrowerBox selected={this.state.borrower.id} onSelect={this.updateSelectBorrower}/>
-          <ActionBox book={this.state.book} borrower={this.state.borrower}
-                     onLendBook={this.handleLendBook}
-                     onGetBookBack={this.handleGetBookBack}
-          />
+        <BookBox selected={this.state.book.id} onSelect={this.updateSelectBook}/>
+        <ActionBox book={this.state.book} borrower={this.state.borrower}
+                   onLendBook={this.handleLendBook}
+                   onGetBookBack={this.handleGetBookBack}
+        />
+        <BorrowerBox selected={this.state.borrower.id} onSelect={this.updateSelectBorrower}/>
       </div>
     )
   }

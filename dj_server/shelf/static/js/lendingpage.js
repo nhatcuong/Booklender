@@ -88,7 +88,7 @@ var AddBookForm = React.createClass({
   render: function render() {
     return React.createElement(
       "form",
-      { className: "addForm", onSubmit: this.handleSubmit },
+      { className: "addForm formInputText", onSubmit: this.handleSubmit },
       React.createElement("input", {
         type: "text",
         placeholder: "Title",
@@ -172,7 +172,7 @@ var AddBorrowerForm = React.createClass({
   render: function render() {
     return React.createElement(
       "form",
-      { className: "addForm", onSubmit: this.handleSubmit },
+      { className: "addForm formInputText", onSubmit: this.handleSubmit },
       React.createElement("input", {
         type: "text",
         placeholder: "Name",
@@ -307,11 +307,11 @@ var LendingBox = React.createClass({
       "div",
       { className: "lendingBox" },
       React.createElement(BookBox, { selected: this.state.book.id, onSelect: this.updateSelectBook }),
-      React.createElement(BorrowerBox, { selected: this.state.borrower.id, onSelect: this.updateSelectBorrower }),
       React.createElement(ActionBox, { book: this.state.book, borrower: this.state.borrower,
         onLendBook: this.handleLendBook,
         onGetBookBack: this.handleGetBookBack
-      })
+      }),
+      React.createElement(BorrowerBox, { selected: this.state.borrower.id, onSelect: this.updateSelectBorrower })
     );
   }
 });
