@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block style_sheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login_signup.css' %}">
+{% endblock %}
+
 {% block content %}
-  <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input class="btn" type="submit" value="Sign Up"/>
-  </form>
+  <div class="rightBox">
+    <form class="formInputText" method="post">
+      {% csrf_token %}
+      <div class="errorMessage">{{ first_error_msg }}</div>
+      <input placeholder="Username" autofocus="" id="id_username" maxlength="150"
+             name="username" type="text" required=""
+             {% if form.username.data %}value="{{form.username.data}}"{% endif %}>
+      <input placeholder="Password" id="id_password1" name="password1" type="password" required="" value="" autocomplete="off">
+      <input placeholder="Password confirm" id="id_password2" name="password2" type="password" required="" autocomplete="off">
+      <input class="btn" type="submit" value="Sign Up"/>
+    </form>
+    <div class="form-sub-message">
+      Already have an account? Click <a href="{% url 'login' %}">here</a> to log in!
+    </div>
+  </div>
 {% endblock %}

@@ -1,0 +1,18 @@
+@import "_raw";
+
+*, *::before, *:after {
+  box-sizing: border-box;
+}
+
+#content {
+  max-width: 1200px;
+  margin: auto;
+}
+
+body {
+  font-family: $bl_font_family;
+}
+
+input, textarea, keygen, select, button {
+  font-family: $bl_font_family;
+}

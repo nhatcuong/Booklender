@@ -1,7 +1,6 @@
-@import "raw";
+@import "_raw";
 
 $input-vertical-padding: 10px;
-
 $input_border-color: $bl_grey_border;
 $input_border_focus_color: $bl_blue_border;
 $input_button_background: $bl_grey_background;
@@ -9,6 +8,7 @@ $input-text-line-height: 18px;
 $input-height: 42px;
 $input-border: 1px;
 $main-action-border: 3px;
+$form-sub-message-gap: 2 * $input-vertical-padding;
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -18,12 +18,13 @@ $main-action-border: 3px;
   border-radius: 4px;
   padding: ($input-height - $input-text-line-height - 2 * ($input_border))/2 8px;
   font-size: $bl_font_size;
+  font-family: $bl_font_family;
   &:focus {
     outline: none;
   }
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
   @extend .input-common;
   border: $input_border solid $input-border-color;
   margin: 0;
@@ -52,13 +53,14 @@ input[type="submit"] {
     margin-top: $input-vertical-padding;
     display: block;
     width: 100%;
+    height: $input-height;
   }
 }
 
 select {
   @extend .input-common;
   width: 100%;
-  margin-top: 10px;
+  margin-top: $input-vertical-padding;
   height: $input-height;
 }
 
@@ -80,4 +82,8 @@ select {
 
 .input-group {
   margin-bottom: 140px;
+}
+
+.form-sub-message {
+  margin-top: $form-sub-message-gap;
 }

@@ -33,7 +33,12 @@
   </script>
 </head>
 <body>
-  {% block content %}{% endblock %}
+  <div id="content">
+    {% block content %}{% endblock %}
+  </div>
+
+  {% block javascript %}{% endblock %}
+
   <form style="display: none;"> {% csrf_token %} </form>
 </body>
 </html>

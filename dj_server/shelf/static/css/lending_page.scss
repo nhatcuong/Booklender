@@ -1,16 +1,6 @@
-@import "common/input";
-
-$main-column-inner-padding: 40px;
-$main-column-outer-padding: 60px;
-
-*, *::before, *:after {
-  box-sizing: border-box;
-}
-
-#content {
-  max-width: 1200px;
-  margin: auto;
-}
+@import "common/_raw";
+@import "common/_input";
+@import "common/_base";
 
 .lendingBox {
   .bookBox {
@@ -50,12 +40,4 @@ $main-column-outer-padding: 60px;
 .main-column {
   padding-left: 40px;
   padding-right: 40px;
-}
-
-body {
-  font-family: 'Open Sans';
-}
-
-input, textarea, keygen, select, button {
-  font-family: 'Open Sans';
 }

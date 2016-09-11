@@ -1,9 +1,24 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block style_sheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login_signup.css' %}">
+{% endblock %}
+
 {% block content %}
-  <form method="post" action="{% url 'login' %}">
+  <div class="rightBox">
+    <form class="formInputText" method="post" action="{% url 'login' %}">
       {% csrf_token %}
-      {{ form }}
-      <input class="btn" type="submit" value="Login" />
-  </form>
+      <div class="errorMessage">{{ form.non_field_errors.0 }}</div>
+      <input placeholder="Username" autofocus="" id="id_username" maxlength="254"
+             name="username" type="text" required=""
+             {% if form.username.data %}value="{{ form.username.data }}"{% endif %}>
+      <input placeholder="Password" id="id_password" name="password" type="password" required="">
+      <input class="btn" type="submit" value="Login"/>
+    </form>
+    <div class="form-sub-message">
+      Not having an account? Click <a href="{% url 'signup' %}">here</a> to register!
+    </div>
+  </div>
 {% endblock %}
