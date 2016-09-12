@@ -244,8 +244,8 @@ var LendButton = React.createClass({
   render: function render() {
     return React.createElement(
       "button",
-      { className: "lendButton actionButton", onClick: this.lendFunction },
-      "Lend it to"
+      { className: "action-button", onClick: this.lendFunction },
+      "Lend to"
     );
   }
 });
@@ -261,8 +261,8 @@ var GetBackButton = React.createClass({
   render: function render() {
     return React.createElement(
       "button",
-      { className: "lendButton actionButton", onClick: this.getBackFunction },
-      "Get it back"
+      { className: "action-button", onClick: this.getBackFunction },
+      "Get back"
     );
   }
 });

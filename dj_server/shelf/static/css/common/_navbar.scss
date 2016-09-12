@@ -1,0 +1,17 @@
+@import "_raw";
+
+#navbar {
+  width: $total-width - 2 * $main-column-outer-padding;
+  height: $navbar-height;
+  padding-top: $navbar-padding-top;
+  border-bottom: $bl_grey_border 1px solid;
+  margin: auto;
+}
+
+#navbar__logo {
+  text-align: center;
+  font-size: 24px;
+  font-style: italic;
+  font-weight: bold;
+  color: #505050;
+}

@@ -64,7 +64,7 @@ select {
   height: $input-height;
 }
 
-.main-action-button {
+.action-button {
   @extend .input-common;
   color: white;
   background-color: $bl_blue_background;

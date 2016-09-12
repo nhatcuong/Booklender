@@ -1,16 +1,19 @@
 @import "_raw";
+@import "_navbar";
 
 *, *::before, *:after {
   box-sizing: border-box;
 }
 
 #content {
-  max-width: 1200px;
+  width: $total-width;
   margin: auto;
+  margin-top: 1.5 * $main-column-inner-padding;
 }
 
 body {
   font-family: $bl_font_family;
+  margin: 0;
 }
 
 input, textarea, keygen, select, button {

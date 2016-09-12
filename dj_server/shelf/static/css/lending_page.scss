@@ -20,19 +20,9 @@
     width: 20%;
     padding-top: 31px;
 
-    .main-action-button {
+    .action-button {
       width: 80%;
       margin: 0 10%;
-    }
-
-    .main-status-label {
-      height: $input-height;
-      line-height: $input-height;
-      text-align: center;
-
-      + .second-action-button {
-        margin-top: 20px;
-      }
     }
   }
 }
