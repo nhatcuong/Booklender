@@ -22,5 +22,10 @@
     position: absolute;
     padding-top: 30px;
     font-size: $bl_small_font_size;
+    color: $bl_grey_border;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
