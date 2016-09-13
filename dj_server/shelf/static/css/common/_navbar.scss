@@ -6,12 +6,21 @@
   padding-top: $navbar-padding-top;
   border-bottom: $bl_grey_border 1px solid;
   margin: auto;
-}
+  position: relative;
 
-#navbar__logo {
-  text-align: center;
-  font-size: 24px;
-  font-style: italic;
-  font-weight: bold;
-  color: #505050;
+  &__logo {
+    text-align: center;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: bold;
+    color: #505050;
+  }
+
+  &__logout {
+    right: 0;
+    top: 0;
+    position: absolute;
+    padding-top: 30px;
+    font-size: $bl_small_font_size;
+  }
 }

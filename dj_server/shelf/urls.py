@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^home$', LendingPageView.as_view(), name='lending_page'),
 
     url(r'^$', login, kwargs={'redirect_authenticated_user': True}, name='login'),
-    url(r'^logout/', logout_then_login, kwargs={'login_url': '/'}),
+    url(r'^logout/', logout_then_login, kwargs={'login_url': '/'}, name='logout'),
     # url(r'^signup/', CreateView.as_view(
     #     template_name='registration/signup.html',
     #     form_class=UserCreationForm,

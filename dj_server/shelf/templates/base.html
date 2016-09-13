@@ -33,10 +33,7 @@
   </script>
 </head>
 <body>
-  <div id="navbar">
-    <div id="navbar__logo">Booklender</div>
-    <div id="logout"></div>
-  </div>
+  {% include "__navbar.html" %}
   <div id="content">
     {% block content %}{% endblock %}
   </div>
