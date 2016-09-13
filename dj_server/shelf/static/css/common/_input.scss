@@ -16,9 +16,14 @@ $form-sub-message-gap: 2 * $input-vertical-padding;
 
 .input-common {
   border-radius: 4px;
-  padding: ($input-height - $input-text-line-height - 2 * ($input_border))/2 8px;
+  //padding: ($input-height - $input-text-line-height - 2 * ($input_border))/2 8px;
+  padding: 0 8px;
   font-size: $bl_font_size;
   font-family: $bl_font_family;
+  border: $input_border solid $input-border-color;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
   &:focus {
     outline: none;
   }
@@ -26,11 +31,8 @@ $form-sub-message-gap: 2 * $input-vertical-padding;
 
 input[type="text"], input[type="password"] {
   @extend .input-common;
-  border: $input_border solid $input-border-color;
   margin: 0;
   color: black;
-  -moz-appearance: none;
-  -webkit-appearance: none;
 
   &:focus {
     outline: none;
@@ -62,6 +64,12 @@ select {
   width: 100%;
   margin-top: $input-vertical-padding;
   height: $input-height;
+  background: url("../assets/down.png") no-repeat;
+  background-position: right 5px top 50%;
+  &:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+  }
 }
 
 .action-button {
