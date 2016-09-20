@@ -1,12 +1,16 @@
 var SelectMixin = {
   render: function () {
+    if (this.props.list.length == 0) {
+      return null;
+    }
     return (
       <div className="select-list input-group">
         <div className="select-list-title">{this.title}</div>
-        <select value={this.props.selected} onChange={this.props.onSelect}>
+        <select value={this.props.selected.id} onChange={this.props.onSelect}>
           <option value={0}>--</option>
           {this.getOptions()}
         </select>
+        {this.subDivComp()}
       </div>
     )
   }
@@ -40,10 +44,24 @@ var BookSelect = React.createClass({
     return this.props.list.map(
       function (book) {
         return (
-          <option key={book.id} value={book.id}>{book.title} - {book.author} - {book.status}</option>
+          <option key={book.id} value={book.id}>{book.title} - {book.author}</option>
         )
       }
     );
+  },
+  divBookStatus: function () {
+    var status = this.props.selected.status;
+    var msg = status == 'on_shelf' ? 'is on shelf'
+      : status == 'lended' ? 'is lent' : '';
+    if (msg) {
+      return (
+        <div className="book-status">{msg}</div>
+      )
+    }
+    return null;
+  },
+  subDivComp: function() {
+    return this.divBookStatus()
   },
 });
 
@@ -83,7 +101,7 @@ var AddBookForm = React.createClass({
           onChange={this.handleAuthorChange}
         />
         <input
-          type="submit" value="Add"
+          type="submit" value="Add Book"
         />
       </form>
     );
@@ -136,6 +154,9 @@ var BorrowerSelect = React.createClass({
         )
       }
     );
+  },
+  subDivComp: function() {
+    return undefined;
   }
 });
 
@@ -165,7 +186,7 @@ var AddBorrowerForm = React.createClass({
           onChange={this.handleNameChange}
         />
         <input
-          type="submit" value="Add"
+          type="submit" value="Add Borrower"
         />
       </form>
     );
@@ -309,12 +330,12 @@ var LendingBox = React.createClass({
   render: function () {
     return (
       <div className="lendingBox">
-        <BookBox selected={this.state.book.id} onSelect={this.updateSelectBook}/>
+        <BookBox selected={this.state.book} onSelect={this.updateSelectBook}/>
         <ActionBox book={this.state.book} borrower={this.state.borrower}
                    onLendBook={this.handleLendBook}
                    onGetBookBack={this.handleGetBookBack}
         />
-        <BorrowerBox selected={this.state.borrower.id} onSelect={this.updateSelectBorrower}/>
+        <BorrowerBox selected={this.state.borrower} onSelect={this.updateSelectBorrower}/>
       </div>
     )
   }

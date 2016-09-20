@@ -2,6 +2,9 @@
 
 var SelectMixin = {
   render: function render() {
+    if (this.props.list.length == 0) {
+      return null;
+    }
     return React.createElement(
       "div",
       { className: "select-list input-group" },
@@ -12,14 +15,15 @@ var SelectMixin = {
       ),
       React.createElement(
         "select",
-        { value: this.props.selected, onChange: this.props.onSelect },
+        { value: this.props.selected.id, onChange: this.props.onSelect },
         React.createElement(
           "option",
           { value: 0 },
           "--"
         ),
         this.getOptions()
-      )
+      ),
+      this.subDivComp()
     );
   }
 };
@@ -55,11 +59,24 @@ var BookSelect = React.createClass({
         { key: book.id, value: book.id },
         book.title,
         " - ",
-        book.author,
-        " - ",
-        book.status
+        book.author
       );
     });
+  },
+  divBookStatus: function divBookStatus() {
+    var status = this.props.selected.status;
+    var msg = status == 'on_shelf' ? 'is on shelf' : status == 'lended' ? 'is lent' : '';
+    if (msg) {
+      return React.createElement(
+        "div",
+        { className: "book-status" },
+        msg
+      );
+    }
+    return null;
+  },
+  subDivComp: function subDivComp() {
+    return this.divBookStatus();
   }
 });
 
@@ -102,7 +119,7 @@ var AddBookForm = React.createClass({
         onChange: this.handleAuthorChange
       }),
       React.createElement("input", {
-        type: "submit", value: "Add"
+        type: "submit", value: "Add Book"
       })
     );
   }
@@ -148,6 +165,9 @@ var BorrowerSelect = React.createClass({
         borrower.name
       );
     });
+  },
+  subDivComp: function subDivComp() {
+    return undefined;
   }
 });
 
@@ -180,7 +200,7 @@ var AddBorrowerForm = React.createClass({
         onChange: this.handleNameChange
       }),
       React.createElement("input", {
-        type: "submit", value: "Add"
+        type: "submit", value: "Add Borrower"
       })
     );
   }
@@ -306,12 +326,12 @@ var LendingBox = React.createClass({
     return React.createElement(
       "div",
       { className: "lendingBox" },
-      React.createElement(BookBox, { selected: this.state.book.id, onSelect: this.updateSelectBook }),
+      React.createElement(BookBox, { selected: this.state.book, onSelect: this.updateSelectBook }),
       React.createElement(ActionBox, { book: this.state.book, borrower: this.state.borrower,
         onLendBook: this.handleLendBook,
         onGetBookBack: this.handleGetBookBack
       }),
-      React.createElement(BorrowerBox, { selected: this.state.borrower.id, onSelect: this.updateSelectBorrower })
+      React.createElement(BorrowerBox, { selected: this.state.borrower, onSelect: this.updateSelectBorrower })
     );
   }
 });

@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block content %}
+  <div class="leftBox">
+    {% include "__promise.html" %}
+  </div>
   <div class="rightBox">
     <form class="formInputText" method="post">
       {% csrf_token %}

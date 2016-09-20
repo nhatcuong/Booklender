@@ -20,3 +20,8 @@ body {
 input, textarea, keygen, select, button {
   font-family: $bl_font_family;
 }
+
+.promise {
+  color: $bl_blue_border;
+  width: 100%;
+}
