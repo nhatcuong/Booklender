@@ -6,6 +6,7 @@
 **.log
 
 # generated files
+/dj_server/static
 **.css.map
 **.js.map
 
