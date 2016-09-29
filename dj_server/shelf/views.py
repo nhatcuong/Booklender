@@ -2,11 +2,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, FormView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.conf import settings
 
 
 class LendingPageView(LoginRequiredMixin, TemplateView):
     login_url = '/'
     template_name = 'lending_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context.update({'base_url': getattr(settings,'BASE_URL')})
+        return context
 
 
 class SignupView(FormView):

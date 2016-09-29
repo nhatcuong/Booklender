@@ -15,6 +15,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 var csrftoken = getCookie('csrftoken');
 
 function csrfSafeMethod(method) {
@@ -29,11 +30,11 @@ $.ajaxSetup({
     }
 });
 
-var URLPREFIX = "http://127.0.0.1:8000/api";
+var API_URL_PREFIX = baseUrl + '/api';
 
 var apiAddBook = function apiAddBook(caller, title, author, success, error) {
   $.ajax({
-    url: URLPREFIX + "/books/",
+    url: API_URL_PREFIX + "/books/",
     type: 'POST',
     dataType: 'json',
     data: {title: title, author: author},
@@ -44,7 +45,7 @@ var apiAddBook = function apiAddBook(caller, title, author, success, error) {
 
 var apiAllBooks = function apiAllBooks(caller, success, error) {
   $.ajax({
-    url: URLPREFIX + "/books/",
+    url: API_URL_PREFIX + "/books/",
     type: 'GET',
     dataType: 'json',
     success: success.bind(caller),
@@ -54,7 +55,7 @@ var apiAllBooks = function apiAllBooks(caller, success, error) {
 
 var apiAllBorrowers = function apiAllBorrowers(caller, success, error) {
   $.ajax({
-    url: URLPREFIX + "/readers/",
+    url: API_URL_PREFIX + "/readers/",
     type: 'GET',
     dataType: 'json',
     success: success.bind(caller),
@@ -64,7 +65,7 @@ var apiAllBorrowers = function apiAllBorrowers(caller, success, error) {
 
 var apiAddBorrower = function apiAddBorrower(caller, name, success, error) {
   $.ajax({
-    url: URLPREFIX + "/readers/",
+    url: API_URL_PREFIX + "/readers/",
     type: 'POST',
     dataType: 'json',
     data: {name: name},
@@ -75,7 +76,7 @@ var apiAddBorrower = function apiAddBorrower(caller, name, success, error) {
 
 var apiLendBook = function apiLendBook(caller, bookId, borrowerId, success, error) {
   $.ajax({
-    url: URLPREFIX + "/lend/",
+    url: API_URL_PREFIX + "/lend/",
     type: 'POST',
     dataType: 'json',
     data: {bookId: bookId, readerId: borrowerId},
@@ -86,7 +87,7 @@ var apiLendBook = function apiLendBook(caller, bookId, borrowerId, success, erro
 
 var apiGetBack = function apiGetBack(caller, bookId, success, error) {
   $.ajax({
-    url: URLPREFIX + "/getBack/",
+    url: API_URL_PREFIX + "/getBack/",
     type: 'POST',
     data: {bookId: bookId},
     success: success.bind(caller),
@@ -96,7 +97,7 @@ var apiGetBack = function apiGetBack(caller, bookId, success, error) {
 
 var apiGetCurrentBorrowerOfBook = function apiGetCurrentBorrowerOfBook(caller, bookId, success, error) {
   $.ajax({
-    url: URLPREFIX + "/currentBorrowerOfBook/",
+    url: API_URL_PREFIX + "/currentBorrowerOfBook/",
     type: 'GET',
     dataType: 'json',
     data: {bookId: bookId},
