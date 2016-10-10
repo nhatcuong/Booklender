@@ -1,6 +1,17 @@
 "use strict";
 
 var SelectMixin = {
+  handleSelect: function handleSelect(e) {
+    var selectedBook = this.getItemFromId(parseInt(e.target.value));
+    this.props.onSelect(selectedBook);
+  },
+  getItemFromId: function getItemFromId(id) {
+    if (!id) return { id: 0 };
+    var results = this.props.list.filter(function (item) {
+      return item.id == id;
+    });
+    return results[0];
+  },
   render: function render() {
     if (this.props.list.length == 0) {
       return null;
@@ -15,7 +26,7 @@ var SelectMixin = {
       ),
       React.createElement(
         "select",
-        { value: this.props.selected.id, onChange: this.props.onSelect },
+        { value: this.props.selected.id, onChange: this.handleSelect },
         React.createElement(
           "option",
           { value: 0 },
@@ -25,25 +36,6 @@ var SelectMixin = {
       ),
       this.subDivComp()
     );
-  }
-};
-
-var SelectAddBoxMixin = {
-  getInitialState: function getInitialState() {
-    return { list: [] };
-  },
-  componentDidMount: function componentDidMount() {
-    this.updateList();
-  },
-  getItemFromId: function getItemFromId(id) {
-    if (!id) return { id: 0 };
-    var results = this.state.list.filter(function (item) {
-      return item.id == id;
-    });
-    return results[0];
-  },
-  handleSelect: function handleSelect(e) {
-    this.props.onSelect(this.getItemFromId(parseInt(e.target.value)));
   }
 };
 
@@ -80,78 +72,6 @@ var BookSelect = React.createClass({
   }
 });
 
-var AddBookForm = React.createClass({
-  displayName: "AddBookForm",
-
-  getInitialState: function getInitialState() {
-    return { title: '', author: '' };
-  },
-  handleTitleChange: function handleTitleChange(e) {
-    this.setState({ title: e.target.value });
-  },
-  handleAuthorChange: function handleAuthorChange(e) {
-    this.setState({ author: e.target.value });
-  },
-  handleSubmit: function handleSubmit(e) {
-    e.preventDefault();
-    var title = this.state.title.trim();
-    var author = this.state.author.trim();
-    if (!title || !author) {
-      return;
-    }
-    this.props.onSubmit({ title: title, author: author });
-    this.setState({ title: '', author: '' });
-  },
-  render: function render() {
-    return React.createElement(
-      "form",
-      { className: "addForm formInputText", onSubmit: this.handleSubmit },
-      React.createElement("input", {
-        type: "text",
-        placeholder: "Title",
-        value: this.state.title,
-        onChange: this.handleTitleChange
-      }),
-      React.createElement("input", {
-        type: "text",
-        placeholder: "Author",
-        value: this.state.author,
-        onChange: this.handleAuthorChange
-      }),
-      React.createElement("input", {
-        type: "submit", value: "Add Book"
-      })
-    );
-  }
-});
-
-var BookBox = React.createClass({
-  displayName: "BookBox",
-
-  mixins: [SelectAddBoxMixin],
-  updateList: function updateList() {
-    apiAllBooks(this, function (data) {
-      this.setState({ list: data });
-    }, function (xhr, status, err) {});
-  },
-  handleAddSubmit: function handleAddSubmit(book) {
-    apiAddBook(this, book.title, book.author, function (data) {
-      this.setState({
-        list: this.state.list.concat([data])
-      });
-      this.props.onSelect(data);
-    }, function (xhr, status, err) {});
-  },
-  render: function render() {
-    return React.createElement(
-      "div",
-      { className: "bookBox" },
-      React.createElement(BookSelect, { selected: this.props.selected, list: this.state.list, onSelect: this.handleSelect }),
-      React.createElement(AddBookForm, { onSubmit: this.handleAddSubmit })
-    );
-  }
-});
-
 var BorrowerSelect = React.createClass({
   displayName: "BorrowerSelect",
 
@@ -171,6 +91,42 @@ var BorrowerSelect = React.createClass({
   }
 });
 
+var AddBookForm = React.createClass({
+  displayName: "AddBookForm",
+
+  getInitialState: function getInitialState() {
+    return { title: '', author: '' };
+  },
+  handleTitleChange: function handleTitleChange(e) {
+    this.setState({ title: e.target.value });
+  },
+  handleAuthorChange: function handleAuthorChange(e) {
+    this.setState({ author: e.target.value });
+  },
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    var title = this.state.title.trim();
+    var author = this.state.author.trim();
+    if (title && author) {
+      apiAddBook(this, title, author, function (data) {
+        this.props.onNew(data);
+        this.setState({ title: '', author: '' });
+      }, function (xhr, status, err) {});
+    }
+  },
+  render: function render() {
+    return React.createElement(
+      "form",
+      { className: "addForm formInputText", onSubmit: this.handleSubmit },
+      React.createElement("input", { type: "text", placeholder: "Title", value: this.state.title,
+        onChange: this.handleTitleChange }),
+      React.createElement("input", { type: "text", placeholder: "Author", value: this.state.author,
+        onChange: this.handleAuthorChange }),
+      React.createElement("input", { type: "submit", value: "Add Book" })
+    );
+  }
+});
+
 var AddBorrowerForm = React.createClass({
   displayName: "AddBorrowerForm",
 
@@ -183,52 +139,20 @@ var AddBorrowerForm = React.createClass({
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
     var name = this.state.name.trim();
-    if (!name) {
-      return;
+    if (name) {
+      apiAddBorrower(this, name, function (data) {
+        this.props.onNew(data);
+        this.setState({ name: '' });
+      }, function (xhr, status, err) {});
     }
-    this.props.onSubmit({ name: name });
-    this.setState({ name: '' });
   },
   render: function render() {
     return React.createElement(
       "form",
       { className: "addForm formInputText", onSubmit: this.handleSubmit },
-      React.createElement("input", {
-        type: "text",
-        placeholder: "Name",
-        value: this.state.name,
-        onChange: this.handleNameChange
-      }),
-      React.createElement("input", {
-        type: "submit", value: "Add Borrower"
-      })
-    );
-  }
-});
-
-var BorrowerBox = React.createClass({
-  displayName: "BorrowerBox",
-
-  mixins: [SelectAddBoxMixin],
-  updateList: function updateList() {
-    apiAllBorrowers(this, function (data) {
-      this.setState({ list: data });
-    }, function (xhr, status, err) {});
-  },
-  handleAddSubmit: function handleAddSubmit(borrower) {
-    apiAddBorrower(this, borrower.name, function (data) {
-      this.setState({
-        list: this.state.list.concat([data])
-      });
-      this.props.onSelect(data);
-    }, function (xhr, status, err) {});
-  },
-  render: function render() {
-    return React.createElement(
-      "div",
-      { className: "borrowerBox" },
-      React.createElement(BorrowerSelect, { selected: this.props.selected, list: this.state.list, onSelect: this.handleSelect }),
-      React.createElement(AddBorrowerForm, { onSubmit: this.handleAddSubmit })
+      React.createElement("input", { type: "text", placeholder: "Name", value: this.state.name,
+        onChange: this.handleNameChange }),
+      React.createElement("input", { type: "submit", value: "Add Borrower" })
     );
   }
 });
@@ -290,48 +214,88 @@ var GetBackButton = React.createClass({
 var LendingBox = React.createClass({
   displayName: "LendingBox",
 
+  componentDidMount: function componentDidMount() {
+    this.updateBooks();
+    this.updateBorrowers();
+  },
   getInitialState: function getInitialState() {
     return {
+      books: [],
+      borrowers: [],
       book: { id: 0 },
       borrower: { id: 0 }
     };
   },
-  updateSelectBook: function updateSelectBook(book) {
+  updateBooks: function updateBooks() {
+    apiAllBooks(this, function (data) {
+      this.setState({ books: data });
+    }, function (xhr, status, err) {});
+  },
+  onNewBook: function onNewBook(book) {
+    this.setState({
+      book: book,
+      books: this.state.books.concat(book)
+    });
+  },
+  updateBorrowers: function updateBorrowers() {
+    apiAllBorrowers(this, function (data) {
+      this.setState({ borrowers: data });
+    }, function (xhr, status, err) {});
+  },
+  onNewBorrower: function onNewBorrower(borrower) {
+    this.setState({
+      borrower: borrower,
+      borrowers: this.state.borrowers.concat(borrower)
+    });
+  },
+  onSelectBook: function onSelectBook(book) {
+    this.setState({ book: book });
+    this.updateBorrowerByBook(book);
+  },
+  updateBorrowerByBook: function updateBorrowerByBook(book) {
     if (book.status == "lended") {
       apiGetCurrentBorrowerOfBook(this, book.id, function (borrower) {
         book.borrowerId = borrower.id;
-        this.setState({
-          borrower: borrower,
-          book: book
-        });
+        this.setState({ borrower: borrower });
       }, function () {});
     } else this.setState({ book: book });
   },
-  updateSelectBorrower: function updateSelectBorrower(borr) {
+  onSelectBorrower: function onSelectBorrower(borr) {
     this.setState({ borrower: borr });
   },
   handleLendBook: function handleLendBook() {
     var updatedBook = this.state.book;
     updatedBook.status = "lended";
     updatedBook.borrowerId = this.state.borrower.id;
-    this.setState({ book: updatedBook });
   },
   handleGetBookBack: function handleGetBookBack() {
     var updatedBook = this.state.book;
     updatedBook.status = "on_shelf";
     updatedBook.borrowerId = undefined;
-    this.setState({ book: updatedBook });
   },
   render: function render() {
     return React.createElement(
       "div",
       { className: "lendingBox" },
-      React.createElement(BookBox, { selected: this.state.book, onSelect: this.updateSelectBook }),
-      React.createElement(ActionBox, { book: this.state.book, borrower: this.state.borrower,
-        onLendBook: this.handleLendBook,
-        onGetBookBack: this.handleGetBookBack
-      }),
-      React.createElement(BorrowerBox, { selected: this.state.borrower, onSelect: this.updateSelectBorrower })
+      React.createElement(
+        "div",
+        { className: "leftCol" },
+        React.createElement(BookSelect, { selected: this.state.book, list: this.state.books, onSelect: this.onSelectBook }),
+        React.createElement(AddBookForm, { onNew: this.onNewBook })
+      ),
+      React.createElement(
+        "div",
+        { className: "centerCol" },
+        React.createElement(ActionBox, { book: this.state.book, borrower: this.state.borrower,
+          onLendBook: this.handleLendBook,
+          onGetBookBack: this.handleGetBookBack })
+      ),
+      React.createElement(
+        "div",
+        { className: "rightCol" },
+        React.createElement(BorrowerSelect, { selected: this.state.borrower, list: this.state.borrowers, onSelect: this.onSelectBorrower }),
+        React.createElement(AddBorrowerForm, { onNew: this.onNewBorrower })
+      )
     );
   }
 });
