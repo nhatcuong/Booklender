@@ -263,11 +263,13 @@ var LendingBox = React.createClass({
     var updatedBook = this.state.book;
     updatedBook.status = "lended";
     updatedBook.borrowerId = this.state.borrower.id;
+    this.setState({book: updatedBook})
   },
   handleGetBookBack: function () {
     var updatedBook = this.state.book;
     updatedBook.status = "on_shelf";
     updatedBook.borrowerId = undefined;
+    this.setState({book: updatedBook})
   },
   render: function () {
     return (
