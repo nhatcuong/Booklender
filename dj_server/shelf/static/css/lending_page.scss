@@ -5,7 +5,7 @@
 $select-box-height: 100px;
 
 .lendingBox {
-  .bookBox {
+  .leftCol {
     float: left;
     width: 40%;
     padding-left: $main-column-outer-padding;
@@ -18,7 +18,7 @@ $select-box-height: 100px;
       height: $select-box-height;
     }
   }
-  .borrowerBox {
+  .rightCol {
     float: left;
     width: 40%;
     padding-left: $main-column-inner-padding;
