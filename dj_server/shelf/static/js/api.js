@@ -32,7 +32,7 @@ $.ajaxSetup({
 
 var API_URL_PREFIX = baseUrl + '/api';
 
-var apiAddBook = function apiAddBook(caller, title, author, success, error) {
+var addBook = function apiAddBook(caller, title, author, success, error) {
   $.ajax({
     url: API_URL_PREFIX + "/books/",
     type: 'POST',
@@ -43,7 +43,7 @@ var apiAddBook = function apiAddBook(caller, title, author, success, error) {
   });
 };
 
-var apiAllBooks = function apiAllBooks(caller, success, error) {
+var allBooks = function apiAllBooks(caller, success, error) {
   $.ajax({
     url: API_URL_PREFIX + "/books/",
     type: 'GET',
@@ -53,7 +53,7 @@ var apiAllBooks = function apiAllBooks(caller, success, error) {
   });
 };
 
-var apiAllBorrowers = function apiAllBorrowers(caller, success, error) {
+var allBorrowers = function apiAllBorrowers(caller, success, error) {
   $.ajax({
     url: API_URL_PREFIX + "/readers/",
     type: 'GET',
@@ -63,7 +63,7 @@ var apiAllBorrowers = function apiAllBorrowers(caller, success, error) {
   });
 };
 
-var apiAddBorrower = function apiAddBorrower(caller, name, success, error) {
+var addBorrower = function apiAddBorrower(caller, name, success, error) {
   $.ajax({
     url: API_URL_PREFIX + "/readers/",
     type: 'POST',
@@ -74,7 +74,7 @@ var apiAddBorrower = function apiAddBorrower(caller, name, success, error) {
   });
 };
 
-var apiLendBook = function apiLendBook(caller, bookId, borrowerId, success, error) {
+var lendBook = function apiLendBook(caller, bookId, borrowerId, success, error) {
   $.ajax({
     url: API_URL_PREFIX + "/lend/",
     type: 'POST',
@@ -85,7 +85,7 @@ var apiLendBook = function apiLendBook(caller, bookId, borrowerId, success, erro
   });
 };
 
-var apiGetBack = function apiGetBack(caller, bookId, success, error) {
+var getBack = function apiGetBack(caller, bookId, success, error) {
   $.ajax({
     url: API_URL_PREFIX + "/getBack/",
     type: 'POST',
@@ -95,7 +95,7 @@ var apiGetBack = function apiGetBack(caller, bookId, success, error) {
   });
 };
 
-var apiGetCurrentBorrowerOfBook = function apiGetCurrentBorrowerOfBook(caller, bookId, success, error) {
+var getCurrentBorrowerOfBook = function apiGetCurrentBorrowerOfBook(caller, bookId, success, error) {
   $.ajax({
     url: API_URL_PREFIX + "/currentBorrowerOfBook/",
     type: 'GET',
@@ -105,3 +105,5 @@ var apiGetCurrentBorrowerOfBook = function apiGetCurrentBorrowerOfBook(caller, b
     error: error.bind(caller)
   });
 };
+
+export {addBook, allBooks, addBorrower, allBorrowers, lendBook, getBack, getCurrentBorrowerOfBook};

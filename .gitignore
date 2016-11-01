@@ -16,3 +16,4 @@
 *.pyc
 **/.sass-cache/
 node_modules
+bundle
