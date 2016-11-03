@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
+import * as api from '../api';
 
 var mapStateToProps = function(store) {
   return {
@@ -10,8 +11,8 @@ var mapStateToProps = function(store) {
 
 var mapDispatchToProps = function(dispatch, ownProps) {
   return {
-    onLendBook: function() {
-      dispatch({type: 'LEND_BOOK'});
+    onLendBook: function(borrower) {
+      dispatch({type: 'LEND_BOOK', borrower: borrower});
     },
     onGetBookBack: function() {
       dispatch({type: 'GET_BACK'});
@@ -23,7 +24,7 @@ var ActionBox = React.createClass({
   lendFunction: function () {
     api.lendBook(this, this.props.book.id, this.props.borrower.id,
       function () {
-        this.props.onLendBook();
+        this.props.onLendBook(this.props.borrower);
       },
       function () {}
     )

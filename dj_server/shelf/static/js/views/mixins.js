@@ -1,3 +1,5 @@
+import React from 'react';
+
 var SelectMixin = {
   handleSelect: function(e) {
     var selectedItem = this.getItemFromId(parseInt(e.target.value));

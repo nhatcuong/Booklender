@@ -13,15 +13,17 @@ const mapStateToProps = function(store) {
 const mapDispatchToProps = function(dispatch, ownProps) {
   return {
     onSelect: function (book) {
-      dispatch({type: 'SELECT_BOOK', item: book});
       if (book.status == "lended") {
         api.getCurrentBorrowerOfBook(this, book.id,
           function (borrower) {
-            dispatch({type: 'SELECT_BORROWER', item: borrower})
+            dispatch({type: 'SELECT_BORROWER', item: borrower});
+            book.borrowerId = borrower.id
+            dispatch({type: 'SELECT_BOOK', item: book});
           },
           function () {}
         );
       }
+      else dispatch({type: 'SELECT_BOOK', item: book});
     },
     onLoadBooks: function(books) {
       dispatch({type: 'LOAD_BOOKS', books: books});
