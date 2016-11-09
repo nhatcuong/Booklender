@@ -95,3 +95,9 @@ select {
 .form-sub-message {
   margin-top: $form-sub-message-gap;
 }
+
+.label-input-like {
+  height: $input-height;
+  line-height: $input-height;
+  margin-bottom: $input-vertical-padding;
+}

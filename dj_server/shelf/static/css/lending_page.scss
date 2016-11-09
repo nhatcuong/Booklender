@@ -4,7 +4,7 @@
 
 $select-box-height: 100px;
 
-.lendingBox {
+.mainBox {
   .leftCol {
     float: left;
     width: 40%;
@@ -35,6 +35,25 @@ $select-box-height: 100px;
     .action-button {
       width: 80%;
       margin: 0 10%;
+    }
+
+    .label {
+      height: $input-height;
+      line-height: $input-height;
+      text-align: center;
+    }
+  }
+
+  .lending-info-box {
+    padding-top: 29px;
+
+    .action-button {
+      margin-top: 10px;
+      width: 200px;
+    }
+
+    .borrower-name {
+      font-weight: bold;
     }
   }
 }

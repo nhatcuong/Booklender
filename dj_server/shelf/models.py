@@ -48,16 +48,13 @@ class Lending(models.Model):
 
     @classmethod
     def book_to_reader(cls, book, reader):
+        start_date = datetime.now().replace(second=0, microsecond=0)
         new_lending = Lending.objects.create(book=book,
                                              borrower=reader,
-                                             start_date=datetime.now())
+                                             start_date=start_date)
         new_lending.save()
         return new_lending
 
-    # def start(self):
-    #     self.start_date = datetime.now()
-    #     self.save()
-
     def end(self):
-        self.end_date = datetime.now()
+        self.end_date = datetime.now().replace(second=0, microsecond=0)
         self.save()

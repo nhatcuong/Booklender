@@ -16,10 +16,10 @@ var bookReducer = function(state = initialState, action) {
   if (action.type == 'LOAD_BOOKS') {
     return Object.assign({}, state, {bookList: action.books});
   }
-  if (action.type == 'LEND_BOOK' && action.borrower) {
+  if (action.type == 'LEND_BOOK' && action.lending) {
     var lendedBook = Object.assign({}, state.book, {
       status: 'lended',
-      borrowerId: action.borrower.id
+      current_lending: action.lending
     });
     var newBookList = state.bookList.slice();
     var index = newBookList.indexOf(state.book);
@@ -29,7 +29,7 @@ var bookReducer = function(state = initialState, action) {
   if (action.type == 'GET_BACK') {
     var returnedBook = Object.assign({}, state.book, {
       status: 'on_shelf',
-      borrowerId: undefined
+      current_lending: undefined
     });
     var newBookList = state.bookList.slice();
     var index = newBookList.indexOf(state.book);

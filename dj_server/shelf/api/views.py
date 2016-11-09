@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework import permissions
 
 from shelf.api import utils
-from shelf.api.serializers import BookSerializer, ReaderSerializer
+from shelf.api.serializers import BookSerializer, ReaderSerializer,\
+    LendingSerializer
 from shelf.models import Book, Reader, Lending
 
 
@@ -15,7 +16,7 @@ class BookViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs = Book.objects.all()
         qs = qs.filter(user_id=self.request.user.id)
-        qs = qs.order_by('title')
+        qs = qs.prefetch_related('current_lending')
         return qs
 
     def perform_create(self, serializer):
@@ -47,7 +48,8 @@ def lend(request):
         return Response({'error': 'book already lent to someone'},
                         status.HTTP_400_BAD_REQUEST)
     book.lend_to_reader(reader)
-    return Response({'done': 'sucess'}, status=status.HTTP_202_ACCEPTED)
+    return Response({'lending': LendingSerializer(book.current_lending).data},
+                    status=status.HTTP_202_ACCEPTED)
 
 
 @api_view(http_method_names=('POST',))
@@ -62,7 +64,7 @@ def get_back(request):
 
 @api_view(http_method_names=('GET',))
 @permission_classes((permissions.IsAuthenticated,))
-def current_borrower_of_book(request):
+def current_lending_from_book(request):
     book, error_response = utils.get_book(request)
     if error_response:
         return error_response

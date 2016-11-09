@@ -13,17 +13,18 @@ const mapStateToProps = function(store) {
 const mapDispatchToProps = function(dispatch, ownProps) {
   return {
     onSelect: function (book) {
-      if (book.status == "lended") {
-        api.getCurrentBorrowerOfBook(this, book.id,
-          function (borrower) {
-            dispatch({type: 'SELECT_BORROWER', item: borrower});
-            book.borrowerId = borrower.id
-            dispatch({type: 'SELECT_BOOK', item: book});
-          },
-          function () {}
-        );
-      }
-      else dispatch({type: 'SELECT_BOOK', item: book});
+      dispatch({type: 'SELECT_BOOK', item: book});
+      // if (book.status == "lended") {
+      //   api.getCurrentBorrowerOfBook(this, book.id,
+      //     function (borrower) {
+      //       dispatch({type: 'SELECT_BORROWER', item: borrower});
+      //       book.borrowerId = borrower.id
+      //       dispatch({type: 'SELECT_BOOK', item: book});
+      //     },
+      //     function () {}
+      //   );
+      // // }
+      // else dispatch({type: 'SELECT_BOOK', item: book});
     },
     onLoadBooks: function(books) {
       dispatch({type: 'LOAD_BOOKS', books: books});
@@ -54,8 +55,7 @@ var BookSelect = React.createClass({
   },
   divBookStatus: function () {
     var status = this.props.selected.status;
-    var msg = status == 'on_shelf' ? 'is on shelf'
-      : status == 'lended' ? 'is lent' : '';
+    var msg = status == 'on_shelf' ? 'is on shelf' : '';
     if (msg) {
       return (
         <div className="book-status">{msg}</div>

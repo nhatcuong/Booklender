@@ -4,6 +4,7 @@
   "description": "This project is about creating a web based application to manage the books you lended to people. It will support basic functionnalities like : - Add new book - Add new borrower - Lend a book to a borrower - Check to whom you have lended a book - Take back book you lended And more...",
   "main": "index.js",
   "dependencies": {
+    "moment": "^2.15.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
@@ -13,9 +14,10 @@
   "watch": {
     "build-js": {
       "patterns": [
-        "js/"
+        "js/",
+        "css/"
       ],
-      "extensions": "js"
+      "extensions": "js, scss"
     },
     "build-css": {
       "patterns": [
@@ -38,7 +40,13 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
+    "css-loader": "^0.25.0",
+    "es6-promise": "^4.0.5",
+    "file-loader": "^0.9.0",
     "node-sass": "^3.9.0",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
     "watch": "^0.19.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2"
