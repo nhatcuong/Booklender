@@ -14,10 +14,9 @@
   "watch": {
     "build-js": {
       "patterns": [
-        "js/",
-        "css/"
+        "js/"
       ],
-      "extensions": "js, scss"
+      "extensions": "js"
     },
     "build-css": {
       "patterns": [

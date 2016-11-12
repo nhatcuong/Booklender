@@ -1,0 +1,15 @@
+{% load static %}
+
+<div id="mobile-overlay">
+  <div class="message">
+    <p>
+      Hello, this site is not (yet) mobile-friendly. You are invited to experience it on a wider screen, or rotate your phone to the landscape mode.
+    </p>
+    <p>
+      Thank you for your understanding.
+    </p>
+  </div>
+  <button onclick="mOverlayControl.userClaimGetIt();" class="action-button">I got it!</button>
+</div>
+
+<script src="{% static 'js/mobile-overlay.js' %}" type="text/javascript"></script>

@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import permissions
 
 from shelf.api import utils
-from shelf.api.serializers import BookSerializer, ReaderSerializer,\
-    LendingSerializer
+from shelf.api.serializers import (BookSerializer, ReaderSerializer,
+                                   LendingSerializer)
 from shelf.models import Book, Reader, Lending
 
 

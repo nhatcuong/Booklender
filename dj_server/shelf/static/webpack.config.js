@@ -1,11 +1,13 @@
-require('es6-promise').polyfill()
+require('es6-promise').polyfill();
 
 module.exports = {
-  entry: './js/app.js',
   devtool: 'source-map',
+  entry: {
+    'lending-page': './js/lending-page.js',
+  },
   output: {
     path: './bundle/js',
-    filename: 'app.bundle.js'
+    filename: '[name].js'
   },
   module: {
     loaders: [
