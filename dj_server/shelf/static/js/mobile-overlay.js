@@ -8,7 +8,7 @@ var mOverlayControl = {
   toDisplay: function() {
     return window.screen.width < 750 && !this.userGotIt();
   },
-  process: function() {
+  proceed: function() {
     if (this.toDisplay()) {
       this.overlay.setAttribute('style', 'display: flex;');
     }
@@ -21,4 +21,4 @@ var mOverlayControl = {
   }
 };
 
-mOverlayControl.process();
+mOverlayControl.proceed();

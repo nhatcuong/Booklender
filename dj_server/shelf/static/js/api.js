@@ -95,15 +95,4 @@ var getBack = function apiGetBack(caller, bookId, success, error) {
   });
 };
 
-var getCurrentBorrowerOfBook = function apiGetCurrentBorrowerOfBook(caller, bookId, success, error) {
-  $.ajax({
-    url: API_URL_PREFIX + "/currentBorrowerOfBook/",
-    type: 'GET',
-    dataType: 'json',
-    data: {bookId: bookId},
-    success: success.bind(caller),
-    error: error.bind(caller)
-  });
-};
-
-export {addBook, allBooks, addBorrower, allBorrowers, lendBook, getBack, getCurrentBorrowerOfBook};
+export {addBook, allBooks, addBorrower, allBorrowers, lendBook, getBack};

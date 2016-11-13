@@ -89,28 +89,3 @@ class TestBookReaderLending(APITestCase):
             data={'bookId': self.book21.id, 'readerId': '-1'}
         )
         self.assertEqual(response.status_code, 404)
-
-    def test_current_borrower_of_book(self):
-        self.client_user1.post(
-            reverse('lend'),
-            data={'bookId': self.book11.id, 'readerId': self.reader11.id}
-        )
-        response = self.client_user1.get(
-            reverse('current_borrower_of_book'),
-        )
-        self.assertEqual(response.status_code,400) #bookId required
-        response = self.client_user1.get(
-            reverse('current_borrower_of_book'),
-            data={'bookId': self.book11.id}
-        )
-        self.assertEqual(response.data['id'], self.reader11.id)
-
-        self.client_user1.post(
-            reverse('get_back'),
-            data={'bookId': self.book11.id}
-        )
-        response = self.client_user1.get(
-            reverse('current_borrower_of_book'),
-            data={'bookId': self.book11.id}
-        )
-        self.assertEqual(response.status_code, 400) #book not currently lended

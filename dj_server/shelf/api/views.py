@@ -62,21 +62,6 @@ def get_back(request):
     return Response({'done': 'sucess'},status=status.HTTP_202_ACCEPTED)
 
 
-@api_view(http_method_names=('GET',))
-@permission_classes((permissions.IsAuthenticated,))
-def current_lending_from_book(request):
-    book, error_response = utils.get_book(request)
-    if error_response:
-        return error_response
-    if book.current_lending:
-        borrower_id = book.current_lending.borrower_id
-        borrower = Reader.objects.get(pk=borrower_id)
-        return Response(ReaderSerializer(borrower).data,
-                        status.HTTP_200_OK)
-    return Response({'error': 'book is not currently lended'},
-                    status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(http_method_names=('GET', 'POST',))
 def purge(request):
     if request.user.is_superuser:
