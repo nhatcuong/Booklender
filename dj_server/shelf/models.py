@@ -1,7 +1,9 @@
-from django.db import models
-from django.contrib.auth.models import User
 from datetime import datetime
 from enum import Enum
+import pytz
+
+from django.db import models
+from django.contrib.auth.models import User
 
 
 class Book(models.Model):
@@ -48,7 +50,9 @@ class Lending(models.Model):
 
     @classmethod
     def book_to_reader(cls, book, reader):
-        start_date = datetime.now().replace(second=0, microsecond=0)
+        start_date = datetime.utcnow().replace(second=0,
+                                               microsecond=0,
+                                               tzinfo=pytz.utc)
         new_lending = Lending.objects.create(book=book,
                                              borrower=reader,
                                              start_date=start_date)
