@@ -36,3 +36,9 @@ class SignupView(FormView):
 
 class AboutView(TemplateView):
     template_name = 'about.html'
+    is_about_page = True
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_about_page'] = True
+        return context

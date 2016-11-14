@@ -7,23 +7,26 @@
 {% endblock %}
 
 {% block content %}
-  <div id="about-msg">
-    <p>
-      Hey guys, welcome to Booklender, a tool to keep track of the books you lent.
-    </p>
-    <p>
-      There are 2 reasons for me to make it. The first one is that I need such a tool, and I want it to be cool. The second is to test/prototype new tech solutions.
-    </p>
-    <p>
-      I ended up putting more time in it than I first intended. But it paid off well enough: I learned lot of new stuffs and had lot of fun.
-    </p>
-    <p>
-      If you happen to use it, your remarks are very welcome. All the code are public on github too, so you can have a look if interested.
-    </p>
-    <p>
-      My name is Nhat Cuong. You can drop me a mail at nguyen.nhat.cuong@gmail.com, or stay in touch by the following ways:
-    </p>
+  <div class="leftCol">
+    <img id="about-pic" src="{% static 'pics/about.jpg' %}">
   </div>
-  <div id="about-links"></div>
-  <img id="about-pic" src="{% static 'pics/about.jpg' %}">
+  <div class="rightCol">
+    <div id="about-msg">
+      <br>
+      Hey guys, welcome to Booklender, a tool to keep track of the books you lent.
+      <br><br>
+      There were 2 reasons for me to make it. The first one is that I need such a tool, and I want it to be cool. The second is to test/prototype new tech solutions.
+      <br><br>
+      If you happen to use it, your remarks are very welcome. All the code are public on <a href="https://github.com/nhatcuong/Booklender">github</a> too, so you can have a look if interested.
+      <br><br>
+      My name is Nhat Cuong. You can drop me a mail at nguyen.nhat.cuong@gmail.com, or stay in touch by the following ways:
+      <br><br>
+  </div>
+  <div id="about-links">
+    <a class="about-link icon-facebook2" target="_blank" href="https://www.facebook.com/ng.nhat.cuong"></a>
+    <a class="about-link icon-instagram" target="_blank" href="https://www.instagram.com/nncuong_/"></a>
+    <a class="about-link icon-wordpress" target="_blank" href="https://viet.nhatcuong.co/"></a>
+    <a class="about-link icon-linkedin" target="_blank" href="https://www.linkedin.com/in/nhat-cuong-nguyen-80551b1a"></a>
+  </div>
+  </div>
 {% endblock %}

@@ -7,6 +7,7 @@
   border-bottom: $bl_grey_border 1px solid;
   margin: auto;
   position: relative;
+  text-align: center;
 
   &__logo {
     text-align: center;
@@ -14,10 +15,29 @@
     font-style: italic;
     font-weight: bold;
     color: $bl_grey_background;
+    text-decoration: none;
+
+    &:visited {
+      color: $bl_grey_background;
+    }
+
   }
 
   &__logout {
     right: 0;
+    top: 0;
+    position: absolute;
+    padding-top: 30px;
+    font-size: $bl_small_font_size;
+    color: $bl_grey_border;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__about {
+    left: 0;
     top: 0;
     position: absolute;
     padding-top: 30px;
