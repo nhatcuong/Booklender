@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style_sheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div id="about-msg">
+    <p>
+      Hey guys, welcome to Booklender, a tool to keep track of the books you lent.
+    </p>
+    <p>
+      There are 2 reasons for me to make it. The first one is that I need such a tool, and I want it to be cool. The second is to test/prototype new tech solutions.
+    </p>
+    <p>
+      I ended up putting more time in it than I first intended. But it paid off well enough: I learned lot of new stuffs and had lot of fun.
+    </p>
+    <p>
+      If you happen to use it, your remarks are very welcome. All the code are public on github too, so you can have a look if interested.
+    </p>
+    <p>
+      My name is Nhat Cuong. You can drop me a mail at nguyen.nhat.cuong@gmail.com, or stay in touch by the following ways:
+    </p>
+  </div>
+  <div id="about-links"></div>
+  <img id="about-pic" src="{% static 'pics/about.jpg' %}">
+{% endblock %}

@@ -32,3 +32,7 @@ class SignupView(FormView):
         if user:
             login(self.request, user)
         return super().form_valid(form)
+
+
+class AboutView(TemplateView):
+    template_name = 'about.html'

@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.views.generic import TemplateView
 from django.contrib.auth.views import *
 
 from shelf.views import LendingPageView, SignupView
@@ -8,12 +9,8 @@ urlpatterns = [
     url(r'^home$', LendingPageView.as_view(), name='lending_page'),
 
     url(r'^$', login, kwargs={'redirect_authenticated_user': True}, name='login'),
-    url(r'^logout/', logout_then_login, kwargs={'login_url': '/'}, name='logout'),
-    # url(r'^signup/', CreateView.as_view(
-    #     template_name='registration/signup.html',
-    #     form_class=UserCreationForm,
-    #     success_url='/'
-    # ), name='signup'),
-    url(r'^signup/', SignupView.as_view(), name='signup'),
+    url(r'^logout/$', logout_then_login, kwargs={'login_url': '/'}, name='logout'),
+    url(r'^signup/$', SignupView.as_view(), name='signup'),
+    url(r'^about/$', TemplateView.as_view(template_name='about.html'))
 ]
 
