@@ -1,7 +1,10 @@
 <div id="navbar">
   {% if not is_about_page %}
     <a id="navbar__about" href="{% url "about" %}">About</a>
+  {% else %}
+    <a id="navbar__about" href="{% url "home" %}">Home</a>
   {% endif %}
+
   <a id="navbar__logo" href="{% url "home" %}">Booklender</a>
   {% if request.user.is_authenticated %}
     <a id="navbar__logout" href="{% url "logout" %}">Log out</a>
