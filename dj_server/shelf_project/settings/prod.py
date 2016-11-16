@@ -6,4 +6,4 @@ ALLOWED_HOSTS = [
     'booklender.nhatcuong.co'
 ]
 
-BASE_URL = 'http://booklender.nhatcuong.biz'
+BASE_URL = 'http://booklender.nhatcuong.co'
